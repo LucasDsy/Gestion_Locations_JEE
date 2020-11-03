@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="LocaJee">
+    <output-path>$PROJECT_DIR$/out/artifacts/LocaJee</output-path>
+    <root id="archive" name="LocaJee.war" />
+  </artifact>
+</component>
