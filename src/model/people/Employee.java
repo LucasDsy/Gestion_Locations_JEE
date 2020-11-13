@@ -1,20 +1,17 @@
 package model.people;
 
 import java.util.Calendar;
+import java.util.Set;
 
 public class Employee extends Person {
-    private Role role;
+    private Set<Role> roles;
 
-    public Employee(String lastName, String firstName, Calendar birthDate, Role role) {
+    public Employee(String lastName, String firstName, Calendar birthDate, Set<Role> roles) {
         super(lastName, firstName, birthDate);
-        this.role = role;
+        this.roles = roles;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
+    public Set<Role> getRoles() {
+        return roles;
     }
 }
