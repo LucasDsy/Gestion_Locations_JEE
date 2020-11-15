@@ -24,8 +24,8 @@
 hs_err_pid*
 
 # Perso
-.tmp
-.target
+tmp/
+target/
 .DS_Store
 
 
