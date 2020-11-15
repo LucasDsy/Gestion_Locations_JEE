@@ -1,14 +1,33 @@
 package model.vehicle;
 
+import javax.persistence.*;
+
 /**
  * Classe Vehicule
  * Cette classe représente un véhicule sans prendre en compte son type
  */
+@Entity
+@Table
+@Inheritance(strategy=InheritanceType.JOINED)
 public abstract class Vehicle implements Rentable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column
+    private Integer id;
+
+    @Column
     private String brand;
+
+    @Column
     private String model;
+
+    @Column
     private int horsePower;
+
+    @Column
     private int maxSpeed;
+
+    @Enumerated(EnumType.STRING)
     private State state;
 
 
@@ -20,8 +39,11 @@ public abstract class Vehicle implements Rentable {
         this.maxSpeed = maxSpeed;
     }
 
+    public Vehicle() {}
+
 
     /* abstract methods */
+    @Transient
     abstract float getCoeff();
 
 
@@ -58,11 +80,19 @@ public abstract class Vehicle implements Rentable {
         this.maxSpeed = maxSpeed;
     }
 
-    public State getEtat() {
+    public State getSate() {
         return state;
     }
 
-    public void setEtat(State state) {
+    public void setState(State state) {
         this.state = state;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

@@ -19,7 +19,7 @@ abstract class AirVehicle extends Vehicle {
     /* Protected methods */
     @Override
     protected float getCoeff() {
-        return ((float) 1/(getHorsePower() * getEtat().valeur)) + TYPEVAL;
+        return ((float) 1/(getHorsePower() * getSate().valeur)) + TYPEVAL;
     }
 
 
