@@ -4,14 +4,14 @@
   Date: 16/11/2020
   Time: 13:47
 --%>
-<div class="modal fade bd-example-modal-lg" id="createClient" tabindex="-1" role="dialog">
+<div class="modal fade bd-example-modal-lg" id="editClient" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg">
         <form method="POST" action="${action}">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">${actionTitle} une fiche client</h5>
+                    <h5 class="modal-title">${actionTitle} une fiche client</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                        <span>&times;</span>
                     </button>
                 </div>
 
