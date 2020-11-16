@@ -5,18 +5,46 @@ import model.people.Employee;
 import model.people.State;
 import model.vehicle.Vehicle;
 
+import javax.persistence.*;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
+@Entity
+@Table
 public class Location {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column
+    private Integer id;
+
+    @OneToOne(targetEntity = Vehicle.class, orphanRemoval = true, cascade = CascadeType.ALL)
     private Vehicle vehicle;
+
+    @OneToOne(targetEntity = Customer.class, orphanRemoval = true, cascade = CascadeType.ALL)
     private Customer customer;
+
+    @OneToOne(targetEntity = Employee.class, orphanRemoval = true, cascade = CascadeType.ALL)
     private Employee employee;
+
+    @Column
+    @Enumerated(value = EnumType.STRING)
     private State status;
+
+    @Column
+    @Temporal(TemporalType.DATE)
     private Calendar startDate;
+
+    @Column
+    @Temporal(TemporalType.DATE)
     private Calendar endDate;
+
+    @Column
     private boolean discount;
+
+    @Column
     private int estimatedKm;
+
+    @Column
     private Integer actualKm;
 
 
@@ -69,6 +97,8 @@ public class Location {
         this.actualKm = actualKm;
     }
 
+    public Location() {}
+
 
     /* Static methods */
     /**
@@ -94,6 +124,7 @@ public class Location {
      * Returns the offset between the beginning and the end of the Rent
      * @return the number of days between two Calendar
      */
+    @Transient
     private int getNumberOfDays() {
         final long millisDebut = startDate.getTimeInMillis();
         final long millisFin = endDate.getTimeInMillis();
@@ -107,6 +138,7 @@ public class Location {
      * Returns the estimated price
      * @return the estimated price
      */
+    @Transient
     public float getEstimatedPrice() {
         return vehicle.getPrixLocJour() * (float) getNumberOfDays() + getExtraPriceForKm(estimatedKm);
     }
@@ -115,6 +147,7 @@ public class Location {
      * Returns the actual price
      * @return the actual price or -1 if there is no actualKm
      */
+    @Transient
     public Float getActualPrice() {
         if (actualKm == null) return null;
         return vehicle.getPrixLocJour() * (float) getNumberOfDays() + getExtraPriceForKm(actualKm);
