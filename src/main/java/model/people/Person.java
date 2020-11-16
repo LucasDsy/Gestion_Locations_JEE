@@ -1,6 +1,7 @@
 package model.people;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -24,9 +25,14 @@ public abstract class Person {
     @Temporal(TemporalType.DATE)
     private Calendar birthDate;
 
-    public Person(String lastName, String firstName, Calendar birthDate) {
+    @Column
+    @Email
+    private String email;
+
+    public Person(String lastName, String firstName, String email, Calendar birthDate) {
         this.lastName = lastName;
         this.firstName = firstName;
+        this.email = email;
         this.birthDate = birthDate;
     }
 
@@ -62,6 +68,14 @@ public abstract class Person {
 
     public void setBirthDate(Calendar birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
