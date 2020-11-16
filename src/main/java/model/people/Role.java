@@ -1,6 +1,6 @@
 package model.people;
 
-enum Role {
+public enum Role {
     ClientManager("Gestionnaire client"),
     RentalManager("Responsable location"),
     CommercialManager("Gestionnaire commercial"),
