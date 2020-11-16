@@ -13,7 +13,7 @@ abstract class LandVehicle extends Vehicle {
     /* Protected methods */
     @Override
     protected float getCoeff() {
-        return ((float) 1/(getHorsePower() * getSate().valeur)) + TYPEVAL;
+        return ((float) 1/(getHorsePower() * getState().valeur)) + TYPEVAL;
     }
 
 

@@ -80,7 +80,7 @@ public abstract class Vehicle implements Rentable {
         this.maxSpeed = maxSpeed;
     }
 
-    public State getSate() {
+    public State getState() {
         return state;
     }
 

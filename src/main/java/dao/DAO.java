@@ -21,6 +21,11 @@ public class DAO<T> {
         this.typeParameterClass = typeParameterClass;
     }
 
+    /**
+     * Persist the enitity in the database
+     * @param entity the entity to create
+     * @return the entity created, with id attribute filled
+     */
     public T persist(T entity) {
         try {
             session.beginTransaction();
@@ -33,6 +38,11 @@ public class DAO<T> {
         return entity;
     }
 
+    /**
+     * Persist all the entities given in parameter, in the database
+     * @param entities List of entities to persist
+     * @return List of the persisted entities, whith their id filled
+     */
     public List<T> persistAll(List<T> entities) {
         try {
             session.beginTransaction();
@@ -45,6 +55,11 @@ public class DAO<T> {
         return entities;
     }
 
+    /**
+     * Update the entity in the database. If the entity does not exists, then the entity gets persisted
+     * @param entity The entity to merge
+     * @return The merged entity
+     */
     public T merge(T entity) {
         try {
             session.beginTransaction();
@@ -57,6 +72,11 @@ public class DAO<T> {
         return entity;
     }
 
+    /**
+     * Update all the entities given in paramaeter, in the database. If the an entity does not exists, then the entity gets persisted
+     * @param entities The entities to merge
+     * @return List of the merged entities
+     */
     public List<T> mergeAll(List<T> entities) {
         try {
             session.beginTransaction();
@@ -69,11 +89,20 @@ public class DAO<T> {
         return entities;
     }
 
+    /**
+     * Find the entity of type T with the given id
+     * @param id Id of the entity
+     * @return the found entity if exists, else null
+     */
     public T findById(Integer id) {
         T res = session.get(typeParameterClass, id);
         return res;
     }
 
+    /**
+     * Find all the entities of type T
+     * @return List of entities
+     */
     public List<T> findAll() {
         CriteriaBuilder cb = session.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(typeParameterClass);
@@ -84,6 +113,11 @@ public class DAO<T> {
         return allQuery.getResultList();
     }
 
+    /**
+     * Remove an entity from databse
+     * @param entity The entity to be removed
+     * @return true if the entity is successfully deleted
+     */
     public boolean delete(T entity) {
         try {
             session.beginTransaction();
@@ -97,6 +131,10 @@ public class DAO<T> {
         return true;
     }
 
+    /**
+     * Remove all entities of type T from databse
+     * @return true if the entities are successfully deleted
+     */
     public boolean deleteAll() {
         try {
             session.beginTransaction();
