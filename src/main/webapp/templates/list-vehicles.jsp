@@ -19,7 +19,6 @@
     </thead>
 
     <%
-        int i = 1;
         List<Vehicle> vehicles = (List) request.getAttribute("vehicles");
     %>
     <tbody>

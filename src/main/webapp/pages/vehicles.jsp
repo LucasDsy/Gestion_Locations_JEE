@@ -9,8 +9,11 @@
 <html>
 <head>
     <title>Gestion véhicules</title>
+    <jsp:include page="/css/mdb-css.jsp"/>
 </head>
 <body>
     <jsp:include page="/templates/list-vehicles.jsp"/>
 </body>
+
+<jsp:include page="/js/mdb-js.jsp"/>
 </html>
