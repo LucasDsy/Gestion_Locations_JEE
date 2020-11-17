@@ -9,8 +9,8 @@ import javax.persistence.Transient;
 class MotorBike extends LandVehicle {
 
     /* Constructeur */
-    public MotorBike(String marque, String modele, int puissance, int vitesseMax, int kilometrage) {
-        super(marque, modele, puissance, vitesseMax, kilometrage);
+    public MotorBike(String brand, String model, int horsePower, int maxSpeed, State state, int kilometers) {
+        super(brand, model, horsePower, maxSpeed, state, kilometers);
     }
 
     public MotorBike() {}

@@ -15,9 +15,9 @@ abstract class AirVehicle extends Vehicle {
     private int flightHours;
 
     /* Constructeur */
-    AirVehicle(String brand, String model, int horsePower, int maxSpeed,
-               int cruisingSpeed, int nbMotors, int flightHours) {
-        super(brand, model, horsePower, maxSpeed);
+    AirVehicle(String brand, String model, int horsePower, int maxSpeed, State state, int cruisingSpeed,
+               int nbMotors, int flightHours) {
+        super(brand, model, horsePower, maxSpeed, state);
         this.cruisingSpeed = cruisingSpeed;
         this.nbMotors = nbMotors;
         this.flightHours = flightHours;

@@ -10,8 +10,8 @@ abstract class LandVehicle extends Vehicle {
     private int kilometers;
 
     /* Constructeur */
-    public LandVehicle(String brand, String model, int horsePower, int maxSpeed, int kilometers) {
-        super(brand, model, horsePower, maxSpeed);
+    public LandVehicle(String brand, String model, int horsePower, int maxSpeed, State state, int kilometers) {
+        super(brand, model, horsePower, maxSpeed, state);
         this.kilometers = kilometers;
     }
 

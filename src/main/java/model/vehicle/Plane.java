@@ -9,8 +9,9 @@ import javax.persistence.Transient;
 class Plane extends AirVehicle {
 
     /* Constructeur */
-    public Plane(String marque, String modele, int puissance, int vitesseMax, int vitesseCroisiere, int nbMoteurs, int heuresVol) {
-        super(marque, modele, puissance, vitesseMax, vitesseCroisiere, nbMoteurs, heuresVol);
+    public Plane(String brand, String model, int horsePower, int maxSpeed, State state, int cruisingSpeed,
+                 int nbMotors, int flightHours) {
+        super(brand, model, horsePower, maxSpeed, state, cruisingSpeed, nbMotors, flightHours);
     }
 
     public Plane() {}
