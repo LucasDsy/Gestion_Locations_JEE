@@ -1,7 +1,6 @@
-package servlet;
+package servlets;
 
 import dao.DAO;
-import model.people.Customer;
 import model.people.Employee;
 import model.people.Role;
 
@@ -16,7 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class EmployeeCreation extends HttpServlet {
-    public static final String VIEW = "chemin/pas/encore/defini";
+    public static final String VIEW = "/WEB-INF/EmployeeCreation.jsp";
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
@@ -25,6 +24,9 @@ public class EmployeeCreation extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String lastName = request.getParameter("lastName");
         String firstName = request.getParameter("firstName");
+        String email = request.getParameter("email");
+        String login = request.getParameter("login");
+        String password = request.getParameter("password");
 
         try {
             Set<Role> roles = new HashSet<>();
@@ -38,7 +40,7 @@ public class EmployeeCreation extends HttpServlet {
 
             birthdate.setTime(dateFormat.parse(request.getParameter("birthday")));
 
-            Employee employee = new Employee(lastName, firstName, birthdate, roles);
+            Employee employee = new Employee(lastName, firstName, email, birthdate, roles, login, password);
             DAO<Employee> dao = new DAO<>(Employee.class);
             dao.merge(employee);
         }
