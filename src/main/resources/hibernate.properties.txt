@@ -5,4 +5,4 @@ hibernate.connection.password=
 hibernate.dialect=org.hibernate.dialect.MariaDB53Dialect
 show_sql=false
 format_sql=false
-hbm2ddl.auto=update
+hibernate.hbm2ddl.auto=update

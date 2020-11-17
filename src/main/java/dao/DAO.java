@@ -6,6 +6,7 @@ import utils.HibernateUtil;
 
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
@@ -14,8 +15,8 @@ import java.util.List;
 // Pour des requêtes spécifiques, il faudra étendre cette classe
 public class DAO<T> {
 
-    private Session session;
-    final private Class<T> typeParameterClass;
+    protected Session session;
+    final protected Class<T> typeParameterClass;
 
     public DAO(Class<T> typeParameterClass){
         this.typeParameterClass = typeParameterClass;
@@ -24,9 +25,8 @@ public class DAO<T> {
     /**
      * Persist the enitity in the database
      * @param entity the entity to create
-     * @return the entity created, with id attribute filled
      */
-    public T persist(T entity) {
+    public void persist(T entity) {
         try {
             session.beginTransaction();
             session.persist(entity);
@@ -35,15 +35,13 @@ public class DAO<T> {
             e.printStackTrace();
             session.getTransaction().rollback();
         }
-        return entity;
     }
 
     /**
      * Persist all the entities given in parameter, in the database
      * @param entities List of entities to persist
-     * @return List of the persisted entities, whith their id filled
      */
-    public List<T> persistAll(List<T> entities) {
+    public void persistAll(List<T> entities) {
         try {
             session.beginTransaction();
             entities.forEach(session::persist);
@@ -52,15 +50,13 @@ public class DAO<T> {
             e.printStackTrace();
             session.getTransaction().rollback();
         }
-        return entities;
     }
 
     /**
      * Update the entity in the database. If the entity does not exists, then the entity gets persisted
      * @param entity The entity to merge
-     * @return The merged entity
      */
-    public T merge(T entity) {
+    public void merge(T entity) {
         try {
             session.beginTransaction();
             session.merge(entity);
@@ -69,15 +65,13 @@ public class DAO<T> {
             e.printStackTrace();
             session.getTransaction().rollback();
         }
-        return entity;
     }
 
     /**
-     * Update all the entities given in paramaeter, in the database. If the an entity does not exists, then the entity gets persisted
+     * Update all the entities given in paramaeter, in the database. If an entity does not exists, then the entity gets persisted
      * @param entities The entities to merge
-     * @return List of the merged entities
      */
-    public List<T> mergeAll(List<T> entities) {
+    public void mergeAll(List<T> entities) {
         try {
             session.beginTransaction();
             entities.forEach(session::merge);
@@ -86,13 +80,11 @@ public class DAO<T> {
             e.printStackTrace();
             session.getTransaction().rollback();
         }
-        return entities;
     }
 
     /**
      * Find the entity of type T with the given id
      * @param id Id of the entity
-     * @return the found entity if exists, else null
      */
     public T findById(Integer id) {
         T res = session.get(typeParameterClass, id);
@@ -132,20 +124,47 @@ public class DAO<T> {
     }
 
     /**
-     * Remove all entities of type T from databse
-     * @return true if the entities are successfully deleted
+     * Remove all entities of type T given in parameters, from database
+     * @param entities The entities to delete
+     * @return The number of entities deleted
      */
-    public boolean deleteAll() {
+    public int deleteAll(List<T> entities) {
+        int res = 0;
+        session.beginTransaction();
+        res = entities
+                .stream()
+                .mapToInt((entity) -> {
+                    try {
+                        session.remove(entity);
+                        return 1;
+                    } catch (HibernateException e) {
+                        e.printStackTrace();
+                        return 0;
+                    }
+                })
+                .sum();
+        session.getTransaction().commit();
+        return res;
+    }
+
+    /**
+     * Remove all entities of type T from database
+     * @return The number of entities deleted
+     */
+    public int deleteAll() {
+        int res = 0;
         try {
             session.beginTransaction();
-            findAll().forEach(session::remove);
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaDelete<T> query = builder.createCriteriaDelete(typeParameterClass);
+            query.from(typeParameterClass);
+            res = session.createQuery(query).executeUpdate();
             session.getTransaction().commit();
         } catch (HibernateException e) {
             e.printStackTrace();
             session.getTransaction().rollback();
-            return false;
         }
-        return true;
+        return res;
     }
 
     public void startSession() {
