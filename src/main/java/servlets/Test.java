@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
-@WebServlet("/vehicles")
+@WebServlet("/test")
 public class Test extends HttpServlet {
 
     public void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
