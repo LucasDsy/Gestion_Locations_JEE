@@ -8,5 +8,5 @@ services:
         ports: 
             - '8080:8080'
         volumes:
-            - './target:/usr/local/tomcat/webapps'
-            - './tmp/logs/:/usr/local/tomcat/logs'
+            - './tmp/logs:/usr/local/tomcat/logs'
+            - './target/LocaJee-1.0-SNAPSHOT.war:/usr/local/tomcat/webapps/LocaJee.war'

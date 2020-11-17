@@ -18,9 +18,9 @@ public class Employee extends Person {
     @Column
     private String password;
 
-    public Employee(String lastName, String firstName, Calendar birthDate, Set<Role> roles,
+    public Employee(String lastName, String firstName, String email, Calendar birthDate, Set<Role> roles,
                     String login, String password) {
-        super(lastName, firstName, birthDate);
+        super(lastName, firstName, email, birthDate);
         this.roles = roles;
         this.login = login;
         this.password = password;
