@@ -85,6 +85,7 @@ public abstract class Person {
                 ", lastName='" + lastName + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", birthDate=" + new SimpleDateFormat("dd MMM yyyy").format(birthDate.getTime()) +
+                ", email='" + email + '\'' +
                 '}';
     }
 }
