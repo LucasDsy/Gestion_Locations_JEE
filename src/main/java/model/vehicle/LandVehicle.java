@@ -1,5 +1,10 @@
 package model.vehicle;
 
+import javax.persistence.*;
+
+@Entity
+@Table
+@Inheritance(strategy= InheritanceType.JOINED)
 abstract class LandVehicle extends Vehicle {
     private static final float TYPEVAL = 0.8f; // valeur du type de véhicule
     private int kilometers;
@@ -10,8 +15,11 @@ abstract class LandVehicle extends Vehicle {
         this.kilometers = kilometers;
     }
 
+    public LandVehicle() {}
+
     /* Protected methods */
     @Override
+    @Transient
     protected float getCoeff() {
         return ((float) 1/(getHorsePower() * getState().valeur)) + TYPEVAL;
     }

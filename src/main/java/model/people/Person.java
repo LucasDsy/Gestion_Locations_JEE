@@ -25,7 +25,7 @@ public abstract class Person {
     @Temporal(TemporalType.DATE)
     private Calendar birthDate;
 
-    @Column
+    @Column(unique = true)
     @Email
     private String email;
 

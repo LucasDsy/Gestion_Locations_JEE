@@ -1,6 +1,14 @@
 package model.vehicle;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+@Entity
+@Table
 public class Car extends LandVehicle {
+    @Column
     private int seatingCapacity;
 
     /* Constructeur */
@@ -12,6 +20,7 @@ public class Car extends LandVehicle {
 
     /* Rentable methods */
     @Override
+    @Transient
     public float getPrixLocJour() {
         final float prixBase = 80.0f;
         return prixBase * getCoeff();
