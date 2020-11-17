@@ -13,7 +13,7 @@ public class Main {
         DAO<Customer> dao = new DAO<>(Customer.class);
 
         // Choups le iencli
-        Customer c = new Customer("Choupault", "Alexis", new GregorianCalendar(1998,8,18));
+        Customer c = new Customer("Choupault", "Alexis", "alexis.choupault@gmail.com", new GregorianCalendar(1998,8,18));
 
         // On oubli pas de démarrer le session
         dao.startSession();

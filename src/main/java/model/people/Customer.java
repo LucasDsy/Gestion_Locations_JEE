@@ -9,8 +9,8 @@ import java.util.Date;
 @Table
 public class Customer extends Person {
 
-    public Customer(String lastName, String firstName, Calendar birthDate) {
-        super(lastName, firstName, birthDate);
+    public Customer(String lastName, String firstName, String email, Calendar birthDate) {
+        super(lastName, firstName, email, birthDate);
     }
 
     public Customer() {
