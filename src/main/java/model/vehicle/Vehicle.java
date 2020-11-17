@@ -95,4 +95,8 @@ public abstract class Vehicle implements Rentable {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    public String getType() { // c'est temporaire wallah c'est bon
+        return this.getClass().toString().substring(6);
+    }
 }

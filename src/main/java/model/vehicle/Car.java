@@ -1,6 +1,6 @@
 package model.vehicle;
 
-class Car extends LandVehicle {
+public class Car extends LandVehicle {
     private int seatingCapacity;
 
     /* Constructeur */
