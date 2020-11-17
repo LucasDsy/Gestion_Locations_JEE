@@ -32,11 +32,12 @@ public abstract class Vehicle implements Rentable {
 
 
     /* Constructeur */
-    public Vehicle(String brand, String model, int horsePower, int maxSpeed) {
+    public Vehicle(String brand, String model, int horsePower, int maxSpeed, State state) {
         this.brand = brand;
         this.model = model;
         this.horsePower = horsePower;
         this.maxSpeed = maxSpeed;
+        this.state = state;
     }
 
     public Vehicle() {}

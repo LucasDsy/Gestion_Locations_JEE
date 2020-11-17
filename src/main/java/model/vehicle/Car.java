@@ -12,10 +12,12 @@ class Car extends LandVehicle {
     private int seatingCapacity;
 
     /* Constructeur */
-    public Car(String marque, String modele, int puissance, int vitesseMax, int kilometrage, int seatingCapacity) {
-        super(marque, modele, puissance, vitesseMax, kilometrage);
+    public Car(String brand, String model, int horsePower, int maxSpeed, State state, int kilometers, int seatingCapacity) {
+        super(brand, model, horsePower, maxSpeed, state, kilometers);
         this.seatingCapacity = seatingCapacity;
     }
+
+    public Car() {}
 
 
     /* Rentable methods */
