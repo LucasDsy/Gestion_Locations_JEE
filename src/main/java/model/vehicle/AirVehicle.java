@@ -1,9 +1,17 @@
 package model.vehicle;
 
+import javax.persistence.*;
+
+@Entity
+@Table
+@Inheritance(strategy= InheritanceType.JOINED)
 abstract class AirVehicle extends Vehicle {
     private static final float TYPEVAL = 1.4f; // valeur du type de véhicule
+    @Column
     private int cruisingSpeed;
+    @Column
     private int nbMotors;
+    @Column
     private int flightHours;
 
     /* Constructeur */
@@ -15,9 +23,12 @@ abstract class AirVehicle extends Vehicle {
         this.flightHours = flightHours;
     }
 
+    public AirVehicle() {}
+
 
     /* Protected methods */
     @Override
+    @Transient
     protected float getCoeff() {
         return ((float) 1/(getHorsePower() * getState().valeur)) + TYPEVAL;
     }
