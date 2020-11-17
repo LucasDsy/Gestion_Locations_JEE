@@ -25,6 +25,9 @@ public class EmployeeCreation extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String lastName = request.getParameter("lastName");
         String firstName = request.getParameter("firstName");
+        String email = request.getParameter("email");
+        String login = request.getParameter("firstName");
+        String password = request.getParameter("firstName");
 
         try {
             Set<Role> roles = new HashSet<>();
@@ -38,7 +41,7 @@ public class EmployeeCreation extends HttpServlet {
 
             birthdate.setTime(dateFormat.parse(request.getParameter("birthday")));
 
-            Employee employee = new Employee(lastName, firstName, birthdate, roles);
+            Employee employee = new Employee(lastName, firstName, email, birthdate, roles, login, password);
             DAO<Employee> dao = new DAO<>(Employee.class);
             dao.merge(employee);
         }
