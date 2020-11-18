@@ -13,8 +13,16 @@ import java.util.*;
 public class EmployeeLogin extends HttpServlet {
 
     public static final String VIEW = "/EmployeeLogin.jsp";
+
+    /** Attributes **/
     public static final String LOGIN = "login";
     public static final String PASSWORD = "password";
+
+    /** Messsages **/
+    public static final String USER_NOT_FOUND = "Utilisateur introuvable";
+    public static final String WRONG_CREDENTIALS = "Identifiants incorrects";
+    public static final String LOGIN_SUCCESS = "Connexion réussie";
+    public static final String INVALID_FIELS = "Champs invalides";
 
     public EmployeeService employeeService;
 
@@ -52,17 +60,21 @@ public class EmployeeLogin extends HttpServlet {
 
             if (this.employeeService.checkExist(login)) {
                 if (this.employeeService.checkPassword(login, password)) {
-                    message = "You are logged in.";
+                    message = LOGIN_SUCCESS;
                     /**
                      * TODO : gestion des sessions utilisateurs
                      **/
                 } else {
-                    message = "Invalid credentials";
+                    message = WRONG_CREDENTIALS;
                 }
             } else {
-                message = "User doesn't exist!";
+                message = USER_NOT_FOUND;
             }
 
+            request.setAttribute( "msgLogin", message );
+            this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
+        } else {
+            message = INVALID_FIELS;
             request.setAttribute( "msgLogin", message );
             this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
         }
