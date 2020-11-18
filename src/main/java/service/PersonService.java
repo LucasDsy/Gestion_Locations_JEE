@@ -1,6 +1,5 @@
 package service;
 
-import dao.DAO;
 import dao.PersonDAO;
 import model.people.Person;
 
