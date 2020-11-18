@@ -8,7 +8,7 @@
         <servlet-name>EmployeeCreation</servlet-name>
         <servlet-class>servlets.EmployeeCreation</servlet-class>
     </servlet>
-    
+
     <servlet-mapping>
         <servlet-name>EmployeeCreation</servlet-name>
         <url-pattern>/createEmployee</url-pattern>
