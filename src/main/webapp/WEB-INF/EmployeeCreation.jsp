@@ -11,16 +11,17 @@
     <title>Création de nouvel utilisateur</title>
 </head>
 <body>
-    <span>${result}</span><br/>
+    <span>${result}</span>
+    <span>${errors["sql"]}</span>
     <form method="post" action="createEmployee">
         <fieldset>
             <legend>Informations personnelles</legend>
 
             <label for="firstName">Prénom</label><br/>
-            <input type="text" id="firstName" name="firstName" placeholder="John"><br/>
+            <input type="text" id="firstName" name="firstName" placeholder="John"><br/><span>${errors["firstName"]}</span><br/>
 
             <label for="lastName">Nom</label><br/>
-            <input type="text" id="lastName" name="lastName" placeholder="Doe"><br/>
+            <input type="text" id="lastName" name="lastName" placeholder="Doe"><br/><span>${errors["lastName"]}</span><br/>
 
             <label for="birthday">Date de naissance</label><br/>
             <input type="date" id="birthday" name="birthday"><span>${errors["birthday"]}</span><br/>
@@ -29,7 +30,7 @@
             <legend>Informations pour l'entreprise</legend>
 
             <label for="email">Email</label><br/>
-            <input type="email" id="email" name="email" placeholder="jdoe@company.fr"><br/>
+            <input type="email" id="email" name="email" placeholder="jdoe@company.fr"><br/><span>${errors["email"]}</span><br/>
 
             <label for="rolesDiv">Roles</label><br/>
             <div id="rolesDiv">
@@ -38,16 +39,16 @@
                     <label for="<%=role%>"><%=role.getWording()%></label><br/>
                 <%}%>
             </div>
-            <span>${errors["role"]}</span>
+            <span>${errors["roles"]}</span>
         </fieldset>
         <fieldset>
             <legend>Identifiants</legend>
 
             <label for="login">Login</label><br/>
-            <input type="text" id="login" name="login" placeholder="login"><br/>
+            <input type="text" id="login" name="login" placeholder="login"><br/><span>${errors["login"]}</span><br/>
 
             <label for="password">Mot de passe</label><br/>
-            <input type="password" id="password" name="password"><br/>
+            <input type="password" id="password" name="password"><br/><span>${errors["password"]}</span><br/>
         </fieldset>
         <input type="submit" value="Valider">
     </form>
