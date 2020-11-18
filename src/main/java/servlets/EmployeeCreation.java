@@ -1,6 +1,5 @@
 package servlets;
 
-import com.google.inject.Inject;
 import model.people.Role;
 import service.EmployeeService;
 
@@ -20,8 +19,6 @@ public class EmployeeCreation extends HttpServlet {
 
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        Role[] roles = Role.values();
-        System.out.println(roles);
         this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
     }
 

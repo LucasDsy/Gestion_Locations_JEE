@@ -92,7 +92,7 @@ public class EmployeeService extends Service<Employee>{
 
         Calendar birthdate = Calendar.getInstance();
         try{
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             birthdate.setTime(dateFormat.parse(birthDateField));
         }
         catch (Exception e){
