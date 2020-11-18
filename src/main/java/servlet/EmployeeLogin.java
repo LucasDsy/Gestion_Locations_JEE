@@ -74,7 +74,7 @@ public class EmployeeLogin extends HttpServlet {
     }
 
     private boolean validateField(String field) {
-        return (field != null && field != "");
+        return (field != null && !field.isEmpty());
     }
 
 }
