@@ -38,21 +38,15 @@ public class EmployeeLogin extends HttpServlet {
         String password = "";
         String message = "";
 
-        try {
-            validateField(request.getParameter(LOGIN));
+        if(this.validateField(request.getParameter(LOGIN)))
             login = request.getParameter(LOGIN);
-        }
-        catch (Exception e) {
+        else
             errors.put(LOGIN, "invalid field");
-        }
 
-        try {
-            validateField(request.getParameter(PASSWORD));
+        if(this.validateField(request.getParameter(PASSWORD)))
             password = request.getParameter(PASSWORD);
-        }
-        catch (Exception e) {
+        else
             errors.put(PASSWORD, "invalid field");
-        }
 
         this.employeeService = new EmployeeService();
 
@@ -71,19 +65,16 @@ public class EmployeeLogin extends HttpServlet {
                 message = USER_NOT_FOUND;
             }
 
-            request.setAttribute( "msgLogin", message );
-            this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
         } else {
             message = INVALID_FIELS;
-            request.setAttribute( "msgLogin", message );
-            this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
         }
+
+        request.setAttribute( "msgLogin", message );
+        this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
     }
 
-    private void validateField(String field) throws Exception {
-        if(field==null || field == ""){
-            throw new Exception("not valid field");
-        }
+    private boolean validateField(String field) {
+        return (field != null && field != "");
     }
 
 }
