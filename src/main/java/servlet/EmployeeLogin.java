@@ -24,7 +24,7 @@ public class EmployeeLogin extends HttpServlet {
     private static final String LOGIN_SUCCESS = "Connexion réussie";
     private static final String INVALID_FIELS = "Champs invalides";
 
-    private EmployeeService employeeService;
+    private EmployeeService employeeService = new EmployeeService();
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
@@ -49,8 +49,6 @@ public class EmployeeLogin extends HttpServlet {
             errors.put(PASSWORD, "invalid field");
 
         if(errors.isEmpty()) {
-
-            this.employeeService = new EmployeeService();
 
             if (this.employeeService.checkExist(login)) {
                 if (this.employeeService.checkPassword(login, password)) {
