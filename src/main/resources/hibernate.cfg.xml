@@ -9,7 +9,14 @@
         <mapping class="model.Location"/>
 
         <!-- vehicle -->
+            <!-- abstract -->
         <mapping class="model.vehicle.Vehicle"/>
+        <mapping class="model.vehicle.AirVehicle"/>
+        <mapping class="model.vehicle.LandVehicle"/>
+            <!-- functionnal -->
+        <mapping class="model.vehicle.Car"/>
+        <mapping class="model.vehicle.MotorBike"/>
+        <mapping class="model.vehicle.Plane"/>
 
         <!-- people -->
         <mapping class="model.people.Person"/>

@@ -1,5 +1,7 @@
 package model.people;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.util.Calendar;
 import java.util.Set;
@@ -10,6 +12,7 @@ public class Employee extends Person {
     @Column
     @Enumerated(EnumType.STRING)
     @ElementCollection(targetClass = Role.class)
+    @Cascade(org.hibernate.annotations.CascadeType.REMOVE)
     private Set<Role> roles;
 
     @Column

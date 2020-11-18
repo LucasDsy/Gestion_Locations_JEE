@@ -2,13 +2,13 @@ import dao.DAO;
 import model.people.Customer;
 import model.people.Employee;
 import model.people.Person;
+import model.people.Role;
 import service.CustomerService;
 import service.PersonService;
 import service.Service;
 
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -19,9 +19,10 @@ public class Main {
 
         // Choups le iencli
         Customer c = new Customer("Choupault", "Alexis", "alexis.choupault@gmail.com", new GregorianCalendar(1998,8,18));
+        Employee e = new Employee("test", "test","test@gmail.com", new GregorianCalendar(1999,1,1), new HashSet<Role>(Collections.singleton(Role.ClientManager)) ,"test", "test");
 
         // Choups est en bdd
-        customerService.create(c);
+        personService.createAll(Arrays.asList(c, e));
 
         //On voit que "id" est rempli
         System.out.println("ID: "+c.getId());
