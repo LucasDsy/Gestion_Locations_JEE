@@ -2,6 +2,7 @@ package model.people;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -16,9 +17,11 @@ public abstract class Person {
     private Integer id;
 
     @Column
+    @NotBlank(message = "Le nom ne peut pas être vide")
     private String lastName;
 
     @Column
+    @NotBlank(message = "Le prénom ne peut pas être vide")
     private String firstName;
 
     @Column
@@ -26,7 +29,7 @@ public abstract class Person {
     private Calendar birthDate;
 
     @Column(unique = true)
-    @Email
+    @Email(message = "L'adresse email n'est pas valide")
     private String email;
 
     public Person(String lastName, String firstName, String email, Calendar birthDate) {

@@ -6,7 +6,9 @@ import model.people.Role;
 import service.CustomerService;
 import service.PersonService;
 import service.Service;
+import utils.HibernateUtil;
 
+import javax.validation.ConstraintViolation;
 import java.io.IOException;
 import java.util.*;
 
@@ -18,10 +20,21 @@ public class Main {
 
         // Choups le iencli
         Customer c = new Customer("Choupault", "Alexis", "alexis.choupault@gmail.com", new GregorianCalendar(1998,8,18));
-        Employee e = new Employee("test", "test","test@gmail.com", new GregorianCalendar(1999,1,1), new HashSet<Role>(Collections.singleton(Role.ClientManager)) ,"test", "test");
+
+        //Employé avec adresse email invalide
+        Employee e = new Employee("test", "test","  ", new GregorianCalendar(1999,1,1), new HashSet<Role>(Collections.singleton(Role.ClientManager)) ,"test", "test");
+
+        Set<ConstraintViolation<Employee>> violations =  HibernateUtil.getValidator().validate(e);
+
+        violations.stream()
+                .map(ConstraintViolation::getMessage)
+                .forEach(System.out::println);
+
+        if(violations.isEmpty()) personService.createAll(Arrays.asList(c, e));
+        else customerService.create(c);
 
         // Choups est en bdd
-        personService.createAll(Arrays.asList(c, e));
+
 
         //On voit que "id" est rempli
         System.out.println("ID: "+c.getId());
