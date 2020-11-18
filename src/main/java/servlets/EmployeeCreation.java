@@ -1,6 +1,7 @@
 package servlets;
 
 import dao.DAO;
+import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 import model.people.Employee;
 import model.people.Role;
 
@@ -13,6 +14,8 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class EmployeeCreation extends HttpServlet {
     public static final String VIEW = "/WEB-INF/EmployeeCreation.jsp";
@@ -35,11 +38,51 @@ public class EmployeeCreation extends HttpServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Map<String, String> errors = new HashMap<>();
-        String lastName = request.getParameter(LASTNAME);
-        String firstName = request.getParameter(FIRSTNAME);
-        String email = request.getParameter(EMAIL);
-        String login = request.getParameter(LOGIN);
-        String password = request.getParameter(PASSWORD);
+
+        String lastName = "";
+        try{
+            validateField(request.getParameter(LASTNAME));
+            lastName = request.getParameter(LASTNAME);
+        }
+        catch (Exception e){
+            errors.put(LASTNAME, "invalid field");
+        }
+
+        String firstName = "";
+        try{
+            validateField(request.getParameter(FIRSTNAME));
+            firstName = request.getParameter(FIRSTNAME);
+        }
+        catch (Exception e){
+            errors.put(FIRSTNAME, "invalid field");
+        }
+
+        String email = "";
+        try{
+            validateEmail(request.getParameter(EMAIL));
+            email = request.getParameter(EMAIL);
+        }
+        catch (Exception e){
+            errors.put(EMAIL, "invalid field");
+        }
+
+        String login = "";
+        try{
+            validateField(request.getParameter(LOGIN));
+            login = request.getParameter(LOGIN);
+        }
+        catch (Exception e){
+            errors.put(LOGIN, "invalid field");
+        }
+
+        String password = "";
+        try{
+            validateField(request.getParameter(PASSWORD));
+            password = request.getParameter(PASSWORD);
+        }
+        catch (Exception e){
+            errors.put(LOGIN, "invalid field");
+        }
 
         Set<Role> roles = new HashSet<>();
         try {
@@ -61,20 +104,39 @@ public class EmployeeCreation extends HttpServlet {
             errors.put(BIRTHDAY, "invalid date format");
         }
 
-        try{
-            Employee employee = new Employee(lastName, firstName, email, birthdate, roles, login, password);
-            DAO<Employee> dao = new DAO<>(Employee.class);
-            dao.merge(employee);
-        }
-        catch (Exception e){
-            errors.put(SQL, "error while saving data");
+        if(errors.isEmpty()){
+            try{
+                Employee employee = new Employee(lastName, firstName, email, birthdate, roles, login, password);
+                DAO<Employee> dao = new DAO<>(Employee.class);
+                dao.startSession();
+                dao.persist(employee);
+                dao.closeSession();
+            }
+            catch (Exception e){
+                errors.put(SQL, "error while saving data");
+            }
         }
 
-        String result = errors.isEmpty() ? "success" : "failure";
+        String result = errors.isEmpty() ? "Utilisateur ajouté" : "Impossible d'ajouter l'utilisateur";
 
         request.setAttribute(ERRORS, errors);
         request.setAttribute(RESULT, result);
 
         this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
+    }
+
+    public void validateField(String field) throws Exception {
+        if(field==null || field == ""){
+            throw new Exception("not valid field");
+        }
+    }
+
+    public void validateEmail(String email) throws Exception{
+        validateField(email);
+        Pattern pattern = Pattern.compile("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+        if(!matcher.find()){
+            throw new Exception("invalid mail address");
+        }
     }
 }
