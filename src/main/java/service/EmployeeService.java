@@ -15,10 +15,7 @@ public class EmployeeService extends Service<Employee> {
         Employee res = this.getDAO().findByLogin(login);
         this.dao.closeSession();
 
-        if(res != null)
-            return true;
-        else
-            return false;
+        return res != null;
     }
 
     public boolean checkPassword(String login, String password) {
@@ -26,10 +23,7 @@ public class EmployeeService extends Service<Employee> {
         Employee res = this.getDAO().checkPassword(login,password);
         this.dao.closeSession();
 
-        if(res != null)
-            return true;
-        else
-            return false;
+        return res != null;
     }
 
     @Override
