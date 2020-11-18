@@ -2,12 +2,6 @@ package dao;
 
 import model.people.Person;
 
-import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import java.util.List;
-
 public class PersonDAO extends DAO<Person> {
 
     public PersonDAO() {
