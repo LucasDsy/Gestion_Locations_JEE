@@ -1,6 +1,5 @@
 package service;
 
-import com.google.inject.Inject;
 import dao.DAO;
 import dao.EmployeeDAO;
 import dao.PersonDAO;
@@ -15,8 +14,6 @@ import java.util.regex.Pattern;
 
 public class EmployeeService extends Service<Employee>{
 
-    public static final String ERRORS = "errors";
-    public static final String RESULT = "result";
     public static final String LASTNAME = "lastName";
     public static final String FIRSTNAME = "firstName";
     public static final String EMAIL = "email";
@@ -25,6 +22,7 @@ public class EmployeeService extends Service<Employee>{
     public static final String ROLES = "roles";
     public static final String BIRTHDAY = "birthday";
     public static final String SQL = "sql";
+    public static final String BASIC_ERROR = "invalid field";
 
     public EmployeeService(){
         super(new EmployeeDAO());
@@ -40,7 +38,7 @@ public class EmployeeService extends Service<Employee>{
             lastName = lastNameField;
         }
         catch (Exception e){
-            errors.put(LASTNAME, "invalid field");
+            errors.put(LASTNAME, BASIC_ERROR);
         }
 
         String firstName = "";
@@ -49,7 +47,7 @@ public class EmployeeService extends Service<Employee>{
             firstName = firstNameField;
         }
         catch (Exception e){
-            errors.put(FIRSTNAME, "invalid field");
+            errors.put(FIRSTNAME, BASIC_ERROR);
         }
 
         String email = "";
@@ -58,7 +56,7 @@ public class EmployeeService extends Service<Employee>{
             email = emailField;
         }
         catch (Exception e){
-            errors.put(EMAIL, "invalid field");
+            errors.put(EMAIL, BASIC_ERROR);
         }
 
         String login = "";
@@ -76,12 +74,18 @@ public class EmployeeService extends Service<Employee>{
             password = passwordField;
         }
         catch (Exception e){
-            errors.put(LOGIN, "invalid field");
+            errors.put(LOGIN, BASIC_ERROR);
         }
 
         Set<Role> roles = new HashSet<>();
         try {
-            String[] stringRoles = rolesField;
+            List<String> stringRoles = Arrays.asList(rolesField);
+
+            stringRoles
+                    .stream()
+                    .map(String::toString)
+                    .forEach(x->roles.add(Role.valueOf(x)));
+
             for (String role : stringRoles) {
                 roles.add(Role.valueOf(role));
             }
@@ -132,10 +136,9 @@ public class EmployeeService extends Service<Employee>{
 
     public void validateLogin(String login) throws Exception {
         validateField(login);
-        EmployeeDAO employeeDAO = getDAO();
-        employeeDAO.startSession();
-        Employee employee = employeeDAO.findByLogin(login);
-        employeeDAO.closeSession();
+        this.dao.startSession();
+        Employee employee = getDAO().findByLogin(login);
+        this.dao.closeSession();
         if(employee != null){
             throw new Exception("login already used");
         }
