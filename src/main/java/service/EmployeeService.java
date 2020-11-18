@@ -25,7 +25,7 @@ public class EmployeeService extends Service<Employee> {
     }
 
     @Override
-    protected DAO<Employee> getDAO() {
+    protected EmployeeDAO getDAO() {
         return (EmployeeDAO) this.dao;
     }
 }
