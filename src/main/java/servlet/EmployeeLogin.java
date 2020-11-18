@@ -48,9 +48,9 @@ public class EmployeeLogin extends HttpServlet {
         else
             errors.put(PASSWORD, "invalid field");
 
-        this.employeeService = new EmployeeService();
-
         if(errors.isEmpty()) {
+
+            this.employeeService = new EmployeeService();
 
             if (this.employeeService.checkExist(login)) {
                 if (this.employeeService.checkPassword(login, password)) {
