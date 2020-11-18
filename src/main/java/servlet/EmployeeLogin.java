@@ -28,8 +28,9 @@ public class EmployeeLogin extends HttpServlet {
 
         String login = "";
         String password = "";
+        String message = "";
 
-        try{
+        try {
             validateField(request.getParameter(LOGIN));
             login = request.getParameter(LOGIN);
         }
@@ -37,7 +38,7 @@ public class EmployeeLogin extends HttpServlet {
             errors.put(LOGIN, "invalid field");
         }
 
-        try{
+        try {
             validateField(request.getParameter(PASSWORD));
             password = request.getParameter(PASSWORD);
         }
@@ -45,6 +46,26 @@ public class EmployeeLogin extends HttpServlet {
             errors.put(PASSWORD, "invalid field");
         }
 
+        this.employeeService = new EmployeeService();
+
+        if(errors.isEmpty()) {
+
+            if (this.employeeService.checkExist(login)) {
+                if (this.employeeService.checkPassword(login, password)) {
+                    message = "You are logged in.";
+                    /**
+                     * TODO : gestion des sessions utilisateurs
+                     **/
+                } else {
+                    message = "Invalid credentials";
+                }
+            } else {
+                message = "User doesn't exist!";
+            }
+
+            request.setAttribute( "msgLogin", message );
+            this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
+        }
     }
 
     public void validateField(String field) throws Exception {

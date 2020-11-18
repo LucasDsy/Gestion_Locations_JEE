@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import = "java.io.*,java.util.*" contentType="text/html;charset=UTF-8" language="java"  %>
 <html>
 <head>
     <title>Login</title>
@@ -18,5 +18,12 @@
         </fieldset>
         <input type="submit" value="Valider">
     </form>
+    <p>
+    <%
+        String msgLogin = (String) request.getAttribute("msgLogin");
+        if(msgLogin != null)
+            out.println(msgLogin);
+    %>
+    </p>
 </body>
 </html>

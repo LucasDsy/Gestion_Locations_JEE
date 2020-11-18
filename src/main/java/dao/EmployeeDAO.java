@@ -33,7 +33,7 @@ public class EmployeeDAO extends DAO<Employee> {
     /**
      * Check a Employee credentials
      * @param login Login of the Employee
-     * @param email Email of the Employee
+     * @param password Email of the Employee
      * @return The Employee
      */
     public Employee checkPassword(String login, String password){

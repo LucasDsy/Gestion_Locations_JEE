@@ -7,21 +7,29 @@ import model.people.Employee;
 public class EmployeeService extends Service<Employee> {
 
     public EmployeeService() {
-        super(new DAO<Employee>(Employee.class));
+        super(new EmployeeDAO());
     }
 
-    public Employee checkExist(String login) {
+    public boolean checkExist(String login) {
         this.dao.startSession();
         Employee res = this.getDAO().findByLogin(login);
         this.dao.closeSession();
-        return res;
+
+        if(res != null)
+            return true;
+        else
+            return false;
     }
 
-    public Employee checkPassword(String login, String password) {
+    public boolean checkPassword(String login, String password) {
         this.dao.startSession();
         Employee res = this.getDAO().checkPassword(login,password);
         this.dao.closeSession();
-        return res;
+
+        if(res != null)
+            return true;
+        else
+            return false;
     }
 
     @Override
