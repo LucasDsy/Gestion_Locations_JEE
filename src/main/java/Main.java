@@ -53,7 +53,7 @@ public class Main {
         if(employeeOrCustomer instanceof Employee) System.out.println("Choups est Employee");
 
         //Truncate table
-        if(personService.deleteAllEntitiesFromTable() > 0 && personService.findAll().isEmpty()) {
+        if(personService.deleteAllEntitiesFromTable()) {
             System.out.println("Tous les objets ont été supprimés");
         }
     }

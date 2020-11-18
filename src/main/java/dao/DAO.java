@@ -6,7 +6,6 @@ import utils.HibernateUtil;
 
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
@@ -128,43 +127,24 @@ public class DAO<T> {
      * @param entities The entities to delete
      * @return The number of entities deleted
      */
-    public int deleteAll(List<T> entities) {
-        int res = 0;
-        session.beginTransaction();
-        res = entities
-                .stream()
-                .mapToInt((entity) -> {
-                    try {
-                        session.remove(entity);
-                        return 1;
-                    } catch (HibernateException e) {
-                        e.printStackTrace();
-                        return 0;
-                    }
-                })
-                .sum();
-        session.getTransaction().commit();
-        return res;
+    public boolean deleteAll(List<T> entities) {
+        try {
+            session.beginTransaction();
+            entities.forEach(session::remove);
+            session.getTransaction().commit();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     /**
      * Remove all entities of type T from database
      * @return The number of entities deleted
      */
-    public int deleteAll() {
-        int res = 0;
-        try {
-            session.beginTransaction();
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaDelete<T> query = builder.createCriteriaDelete(typeParameterClass);
-            query.from(typeParameterClass);
-            res = session.createQuery(query).executeUpdate();
-            session.getTransaction().commit();
-        } catch (HibernateException e) {
-            e.printStackTrace();
-            session.getTransaction().rollback();
-        }
-        return res;
+    public boolean deleteAll() {
+        return deleteAll(findAll());
     }
 
     public void startSession() {
