@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table
 @Inheritance(strategy= InheritanceType.JOINED)
-abstract class LandVehicle extends Vehicle {
+public abstract class LandVehicle extends Vehicle {
     private static final float TYPEVAL = 0.8f; // valeur du type de véhicule
     private int kilometers;
 

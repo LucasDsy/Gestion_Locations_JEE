@@ -7,7 +7,7 @@ import javax.persistence.Transient;
 
 @Entity
 @Table
-class Car extends LandVehicle {
+public class Car extends LandVehicle {
     @Column
     private int seatingCapacity;
 

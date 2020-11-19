@@ -6,6 +6,7 @@ import javax.persistence.Transient;
 
 @Entity
 @Table
+public
 class Plane extends AirVehicle {
 
     /* Constructeur */
