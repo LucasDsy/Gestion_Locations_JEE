@@ -16,6 +16,14 @@ public class EmployeeService extends Service<Employee> {
         super(new EmployeeDAO());
     }
 
+    public Employee getEmployee(String login) {
+        this.dao.startSession();
+        Employee res = this.getDAO().findByLogin(login);
+        this.dao.closeSession();
+
+        return res;
+    }
+
     public boolean checkExist(String login) {
         this.dao.startSession();
         Employee res = this.getDAO().findByLogin(login);
