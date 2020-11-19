@@ -21,7 +21,7 @@ abstract class LandVehicle extends Vehicle {
     @Override
     @Transient
     protected float getCoeff() {
-        return ((float) 1/(getHorsePower() * getState().valeur)) + TYPEVAL;
+        return (1.0f / (float)(getHorsePower() * getState().valeur)) + TYPEVAL;
     }
 
 
