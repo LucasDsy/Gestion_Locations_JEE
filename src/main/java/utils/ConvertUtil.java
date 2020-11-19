@@ -1,12 +1,13 @@
 package utils;
 
+import model.people.Role;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.*;
 
-public class DateUtil {
-
+public class ConvertUtil {
     /**
      * Convertit une String date en Calendar
      * @param birthDateString une date au format d'un input type date (yyyy-MM-dd)
@@ -20,5 +21,16 @@ public class DateUtil {
         date.setTime(formatter.parse(birthDateString));
 
         return date;
+    }
+
+    public static Set<Role> convertArrayStringToSet(String[] listArray){
+        Set<Role> set = new HashSet<>();
+        List<String> list = Arrays.asList(listArray);
+
+        list.stream()
+                .map(String::toString)
+                .forEach(x->set.add(Role.valueOf(x)));
+
+        return set;
     }
 }
