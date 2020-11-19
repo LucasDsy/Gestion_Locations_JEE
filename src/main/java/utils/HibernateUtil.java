@@ -3,6 +3,10 @@ package utils;
 import org.hibernate.*;
 import org.hibernate.cfg.*;
 
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+
 public class HibernateUtil {
 
     private static final SessionFactory sessionFactory;
@@ -19,5 +23,9 @@ public class HibernateUtil {
     public static Session getSession()
             throws HibernateException {
         return sessionFactory.openSession();
+    }
+
+    public static Validator getValidator() {
+        return Validation.buildDefaultValidatorFactory().getValidator();
     }
 }

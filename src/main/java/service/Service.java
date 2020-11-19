@@ -70,10 +70,10 @@ public abstract class Service<T> {
      * @param entities The entities to delete
      * @return The number of entities deleted
      */
-    public int deleteAll(List<T> entities){
-        int res = 0;
+    public boolean deleteAll(List<T> entities){
+        boolean res;
         this.dao.startSession();
-        this.dao.deleteAll(entities);
+        res = this.dao.deleteAll(entities);
         this.dao.closeSession();
         return res;
     }
@@ -82,8 +82,8 @@ public abstract class Service<T> {
      * Remove all entities of type T from database
      * @return The number of entities deleted
      */
-    public int deleteAllEntitiesFromTable(){
-        int res = 0;
+    public boolean deleteAllEntitiesFromTable(){
+        boolean res;
         this.dao.startSession();
         res = this.dao.deleteAll();
         this.dao.closeSession();
