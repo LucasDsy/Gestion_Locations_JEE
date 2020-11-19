@@ -16,13 +16,10 @@ public class EmployeeLogin extends HttpServlet {
 
     /** VIEWS **/
     private static final String VIEW = "/login.jsp";
-    private static final String HOME_PAGE = "/pages/home.jsp";
 
     /** Attributes **/
     private static final String LOGIN = "login";
     private static final String PASSWORD = "password";
-    private static final String ACTION = "action";
-    private static final String DISCONNECT = "disconnect";
 
     /** Messsages **/
     private static final String USER_NOT_FOUND = "Utilisateur introuvable";
@@ -38,12 +35,7 @@ public class EmployeeLogin extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        this.session = request.getSession();
-
-        if(this.session.getAttribute(NAME_USER_SESSION) != null)
-            this.getServletContext().getRequestDispatcher(HOME_PAGE).forward(request, response);
-        else
-            this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
+        this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -71,7 +63,6 @@ public class EmployeeLogin extends HttpServlet {
                     message = LOGIN_SUCCESS;
                     this.session = request.getSession();
                     this.session.setAttribute(NAME_USER_SESSION,this.employeeService.getEmployee(login));
-                    this.getServletContext().getRequestDispatcher(HOME_PAGE).forward(request, response);
                 } else {
                     message = WRONG_CREDENTIALS;
                 }
