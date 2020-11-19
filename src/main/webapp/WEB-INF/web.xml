@@ -13,4 +13,14 @@
             <servlet-name>EmployeeLogin</servlet-name>
             <url-pattern>/login</url-pattern>
         </servlet-mapping>
+
+    <servlet>
+        <servlet-name>EmployeeCreation</servlet-name>
+        <servlet-class>servlets.EmployeeCreation</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>EmployeeCreation</servlet-name>
+        <url-pattern>/createEmployee</url-pattern>
+    </servlet-mapping>
 </web-app>
