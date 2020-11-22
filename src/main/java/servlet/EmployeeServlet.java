@@ -1,12 +1,13 @@
 package servlet;
 
+import model.people.Employee;
 import model.people.Role;
 import service.EmployeeService;
 import utils.ConvertUtil;
 import utils.HibernateUtil;
 
-import javax.persistence.Convert;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,19 +16,25 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.*;
 
-public class Employee extends HttpServlet {
-    public static final String LASTNAME = "lastName";
-    public static final String FIRSTNAME = "firstName";
-    public static final String EMAIL = "email";
-    public static final String LOGIN = "login";
-    public static final String PASSWORD = "password";
-    public static final String ROLES = "roles";
-    public static final String BIRTHDAY = "birthday";
-    public static final String SQL = "sql";
-    public static final String BASIC_ERROR = "invalid field";
+@WebServlet("/createEmployee")
+public class EmployeeServlet extends HttpServlet {
+    /** Attributes **/
+    private static final String LASTNAME = "lastName";
+    private static final String FIRSTNAME = "firstName";
+    private static final String EMAIL = "email";
+    private static final String LOGIN = "login";
+    private static final String PASSWORD = "password";
+    private static final String ROLES = "roles";
+    private static final String BIRTHDAY = "birthday";
     public static final String ERRORS = "errors";
     public static final String RESULT = "result";
-    public static final String VIEW = "/WEB-INF/EmployeeCreation.jsp";
+
+    /** Errors **/
+    private static final String LOGIN_ALREADY_EXISTS = "Ce login existe déjà";
+    private static final String BIRTHDATE_INVALID = "La date de naissance n'est pas remplie correctement";
+
+    /** Views **/
+    private static final String VIEW = "/views/employee-creation.jsp";
 
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
@@ -36,33 +43,35 @@ public class Employee extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // conversion des champs string vers des objets
-        Calendar birthdate = new GregorianCalendar();
+        EmployeeService service = new EmployeeService();
+        HashSet<String> errors = new HashSet<>();
+
+        if(service.checkExist(request.getParameter(LOGIN)))
+            errors.add(LOGIN_ALREADY_EXISTS);
+
+        Calendar birthdate = null;
         try {
             birthdate = ConvertUtil.convertDateString(request.getParameter(BIRTHDAY));
         } catch (ParseException e) {
-            e.printStackTrace();
+            errors.add(BIRTHDATE_INVALID);
         }
-        Set<Role> roles = ConvertUtil.convertArrayStringToSet(request.getParameterValues(ROLES));
 
-        model.people.Employee employee = new model.people.Employee(request.getParameter(LASTNAME), request.getParameter(FIRSTNAME), request.getParameter(EMAIL), birthdate, roles, request.getParameter(LOGIN), request.getParameter(PASSWORD));
+        Set<Role> roles = ConvertUtil.convertArrayStringToSet(request.getParameterValues(ROLES));
+        Employee employee = new Employee(request.getParameter(LASTNAME), request.getParameter(FIRSTNAME), request.getParameter(EMAIL), birthdate, roles, request.getParameter(LOGIN), request.getParameter(PASSWORD));
 
         //vérification par hibernate que les champs sont valides
-        Set<ConstraintViolation<model.people.Employee>> violations =  HibernateUtil.getValidator().validate(employee);
-
-        violations.stream()
+        HibernateUtil.getValidator()
+                .validate(employee)
+                .stream()
                 .map(ConstraintViolation::getMessage)
-                .forEach(System.out::println);
+                .forEach(errors::add);
 
-        Map<String, String> errors = new HashMap<>();
-        EmployeeService service = new EmployeeService();
-        if(violations.isEmpty()) {
-            errors = service.addEmployee(employee);
+        if(errors.isEmpty()) {
+            service.create(employee);
         }
-        String result = errors.isEmpty() ? "Utilisateur ajouté" : "Impossible d'ajouter l'utilisateur";
 
         request.setAttribute(ERRORS, errors);
-        request.setAttribute(RESULT, result);
+        request.setAttribute(RESULT, errors.isEmpty());
 
         this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
     }

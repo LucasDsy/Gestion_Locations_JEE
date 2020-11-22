@@ -12,7 +12,7 @@ public class Employee extends Person {
     @ElementCollection(targetClass = Role.class)
     private Set<Role> roles;
 
-    @Column
+    @Column(unique = true)
     private String login;
 
     @Column

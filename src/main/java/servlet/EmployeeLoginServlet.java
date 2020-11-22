@@ -3,6 +3,7 @@ package servlet;
 import service.EmployeeService;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,9 +11,11 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.HashMap;
 
-public class EmployeeLogin extends HttpServlet {
+@WebServlet("/login")
+public class EmployeeLoginServlet extends HttpServlet {
 
-    private static final String VIEW = "/EmployeeLogin.jsp";
+    /** Views **/
+    private static final String VIEW = "/views/employee-login.jsp";
 
     /** Attributes **/
     private static final String LOGIN = "login";
@@ -22,7 +25,7 @@ public class EmployeeLogin extends HttpServlet {
     private static final String USER_NOT_FOUND = "Utilisateur introuvable";
     private static final String WRONG_CREDENTIALS = "Identifiants incorrects";
     private static final String LOGIN_SUCCESS = "Connexion réussie";
-    private static final String INVALID_FIELS = "Champs invalides";
+    private static final String INVALID_FIELDS = "Champs invalides";
 
     private EmployeeService employeeService = new EmployeeService();
 
@@ -64,7 +67,7 @@ public class EmployeeLogin extends HttpServlet {
             }
 
         } else {
-            message = INVALID_FIELS;
+            message = INVALID_FIELDS;
         }
 
         request.setAttribute( "msgLogin", message );
