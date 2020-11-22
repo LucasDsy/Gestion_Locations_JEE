@@ -22,7 +22,7 @@
                     <th scope="col">Prénom</th>
                     <th scope="col">Date de naissance</th>
                     <th scope="col">Modifier</th>
-                    <th scope="col">Supprimer</th>
+                    <th scope="col"> Supprimer</th>
                 </tr>
             </thead>
 

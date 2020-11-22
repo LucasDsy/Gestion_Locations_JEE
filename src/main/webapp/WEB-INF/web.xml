@@ -23,4 +23,14 @@
         <servlet-name>Employee</servlet-name>
         <url-pattern>/createEmployee</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Customer</servlet-name>
+        <servlet-class>servlet.Customer</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Customer</servlet-name>
+        <url-pattern>/customers/*</url-pattern>
+    </servlet-mapping>
 </web-app>
