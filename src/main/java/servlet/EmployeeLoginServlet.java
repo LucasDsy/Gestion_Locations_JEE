@@ -28,7 +28,6 @@ public class EmployeeLoginServlet extends HttpServlet {
 
 
     /** SESSION **/
-    HttpSession session;
     private static final String NAME_USER_SESSION = "user";
 
     private EmployeeService employeeService = new EmployeeService();
@@ -40,6 +39,8 @@ public class EmployeeLoginServlet extends HttpServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        HttpSession session;
+
         String login = "";
         String password = "";
         String message = "";
@@ -50,8 +51,8 @@ public class EmployeeLoginServlet extends HttpServlet {
         if (this.employeeService.checkExist(login)) {
             if (this.employeeService.checkPassword(login, password)) {
                 message = LOGIN_SUCCESS;
-                this.session = request.getSession();
-                this.session.setAttribute(NAME_USER_SESSION, this.employeeService.getWithLogin(login));
+                session = request.getSession();
+                session.setAttribute(NAME_USER_SESSION, this.employeeService.getWithLogin(login));
             } else {
                 message = WRONG_CREDENTIALS;
             }
