@@ -7,60 +7,75 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
 
 @WebServlet("/login")
 public class EmployeeLoginServlet extends HttpServlet {
 
-    /** VIEWS **/
+    /** Views **/
     private static final String VIEW = "/views/employee-login.jsp";
 
     /** Attributes **/
     private static final String LOGIN = "login";
     private static final String PASSWORD = "password";
-    private static final String MESSAGE = "msgLogin";
 
     /** Messsages **/
     private static final String USER_NOT_FOUND = "Utilisateur introuvable";
     private static final String WRONG_CREDENTIALS = "Identifiants incorrects";
     private static final String LOGIN_SUCCESS = "Connexion réussie";
-
-
-    /** SESSION **/
-    private static final String NAME_USER_SESSION = "user";
+    private static final String INVALID_FIELDS = "Champs invalides";
 
     private EmployeeService employeeService = new EmployeeService();
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        HttpSession session;
+        Map<String, String> errors = new HashMap<>();
 
         String login = "";
         String password = "";
         String message = "";
 
-        login = request.getParameter(LOGIN);
-        password = request.getParameter(PASSWORD);
+        if(this.validateField(request.getParameter(LOGIN)))
+            login = request.getParameter(LOGIN);
+        else
+            errors.put(LOGIN, "invalid field");
 
-        if (this.employeeService.checkExist(login)) {
-            if (this.employeeService.checkPassword(login, password)) {
-                message = LOGIN_SUCCESS;
-                session = request.getSession();
-                session.setAttribute(NAME_USER_SESSION, this.employeeService.getWithLogin(login));
+        if(this.validateField(request.getParameter(PASSWORD)))
+            password = request.getParameter(PASSWORD);
+        else
+            errors.put(PASSWORD, "invalid field");
+
+        if(errors.isEmpty()) {
+
+            if (this.employeeService.checkExist(login)) {
+                if (this.employeeService.checkPassword(login, password)) {
+                    message = LOGIN_SUCCESS;
+                    /**
+                     * TODO : gestion des sessions utilisateurs
+                     **/
+                } else {
+                    message = WRONG_CREDENTIALS;
+                }
             } else {
-                message = WRONG_CREDENTIALS;
+                message = USER_NOT_FOUND;
             }
+
         } else {
-            message = USER_NOT_FOUND;
+            message = INVALID_FIELDS;
         }
 
-        request.setAttribute(MESSAGE, message);
+        request.setAttribute( "msgLogin", message );
         this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
     }
+
+    private boolean validateField(String field) {
+        return (field != null && !field.isEmpty());
+    }
+
 }

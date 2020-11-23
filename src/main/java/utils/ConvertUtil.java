@@ -6,6 +6,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ConvertUtil {
     /**
@@ -24,13 +26,8 @@ public class ConvertUtil {
     }
 
     public static Set<Role> convertArrayStringToSet(String[] listArray){
-        Set<Role> set = new HashSet<>();
-        List<String> list = Arrays.asList(listArray);
-
-        list.stream()
-                .map(String::toString)
-                .forEach(x->set.add(Role.valueOf(x)));
-
-        return set;
+        return Stream.of(listArray)
+                .map(Role::valueOf)
+                .collect(Collectors.toSet());
     }
 }

@@ -24,7 +24,7 @@
 
         String msgLogin = (String) request.getAttribute(MESSAGE);
         if(msgLogin != null)
-            out.println(MESSAGE);
+            System.out.println(msgLogin);
     %>
     </p>
 </body>
