@@ -16,7 +16,7 @@ public class EmployeeService extends Service<Employee> {
         super(new EmployeeDAO());
     }
 
-    public Employee get(String login) {
+    public Employee getWithLogin(String login) {
         this.dao.startSession();
         Employee res = this.getDAO().findByLogin(login);
         this.dao.closeSession();

@@ -51,7 +51,7 @@ public class EmployeeLoginServlet extends HttpServlet {
             if (this.employeeService.checkPassword(login, password)) {
                 message = LOGIN_SUCCESS;
                 this.session = request.getSession();
-                this.session.setAttribute(NAME_USER_SESSION, this.employeeService.get(login));
+                this.session.setAttribute(NAME_USER_SESSION, this.employeeService.getWithLogin(login));
             } else {
                 message = WRONG_CREDENTIALS;
             }
