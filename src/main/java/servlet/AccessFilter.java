@@ -27,7 +27,14 @@ public class AccessFilter implements Filter {
 
         /** Allow CSS and JS **/
         String path = request.getRequestURI().substring(request.getContextPath().length());
+
         if (path.startsWith("/css") || path.startsWith("/js")) {
+            chain.doFilter(request,response);
+            return;
+        }
+
+        /** Allow login page **/
+        if(path.equals("/views/employee-login.jsp")) {
             chain.doFilter(request,response);
             return;
         }

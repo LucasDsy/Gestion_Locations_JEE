@@ -3,6 +3,7 @@ package servlet;
 import service.EmployeeService;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,7 +12,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EmployeeDisconnect extends HttpServlet {
+@WebServlet("/disconnect")
+public class EmployeeDisconnectServlet extends HttpServlet {
 
     /** VIEWS **/
     private static final String VIEW = "/views/employee-login.jsp";

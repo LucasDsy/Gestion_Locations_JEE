@@ -4,6 +4,7 @@ import org.graalvm.compiler.code.SourceStackTraceBailoutException;
 import service.EmployeeService;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,7 +13,8 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.HashMap;
 
-public class EmployeeLogin extends HttpServlet {
+@WebServlet("/login")
+public class EmployeeLoginServlet extends HttpServlet {
 
     /** VIEWS **/
     private static final String VIEW = "/views/employee-login.jsp";
@@ -61,8 +63,8 @@ public class EmployeeLogin extends HttpServlet {
             if (this.employeeService.checkExist(login)) {
                 if (this.employeeService.checkPassword(login, password)) {
                     message = LOGIN_SUCCESS;
-                    this.session = request.getSession();Jm
-                    this.session.setAttribute(NAME_USER_SESSION,this.employeeService.getEmployee(login));
+                    this.session = request.getSession();
+                    this.session.setAttribute(NAME_USER_SESSION,this.employeeService.get(login));
                 } else {
                     message = WRONG_CREDENTIALS;
                 }
