@@ -1,6 +1,5 @@
 package servlet;
 
-import org.graalvm.compiler.code.SourceStackTraceBailoutException;
 import service.EmployeeService;
 
 import javax.servlet.ServletException;
@@ -22,12 +21,13 @@ public class EmployeeLoginServlet extends HttpServlet {
     /** Attributes **/
     private static final String LOGIN = "login";
     private static final String PASSWORD = "password";
+    private static final String MESSAGE = "msgLogin";
 
     /** Messsages **/
     private static final String USER_NOT_FOUND = "Utilisateur introuvable";
     private static final String WRONG_CREDENTIALS = "Identifiants incorrects";
     private static final String LOGIN_SUCCESS = "Connexion réussie";
-    private static final String INVALID_FIELS = "Champs invalides";
+
 
     /** SESSION **/
     HttpSession session;
@@ -42,46 +42,26 @@ public class EmployeeLoginServlet extends HttpServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        Map<String, String> errors = new HashMap<>();
-
         String login = "";
         String password = "";
         String message = "";
 
-        if(this.validateField(request.getParameter(LOGIN)))
-            login = request.getParameter(LOGIN);
-        else
-            errors.put(LOGIN, "invalid field");
+        login = request.getParameter(LOGIN);
+        password = request.getParameter(PASSWORD);
 
-        if(this.validateField(request.getParameter(PASSWORD)))
-            password = request.getParameter(PASSWORD);
-        else
-            errors.put(PASSWORD, "invalid field");
-
-        if(errors.isEmpty()) {
-
-            if (this.employeeService.checkExist(login)) {
-                if (this.employeeService.checkPassword(login, password)) {
-                    message = LOGIN_SUCCESS;
-                    this.session = request.getSession();
-                    this.session.setAttribute(NAME_USER_SESSION,this.employeeService.get(login));
-                } else {
-                    message = WRONG_CREDENTIALS;
-                }
+        if (this.employeeService.checkExist(login)) {
+            if (this.employeeService.checkPassword(login, password)) {
+                message = LOGIN_SUCCESS;
+                this.session = request.getSession();
+                this.session.setAttribute(NAME_USER_SESSION, this.employeeService.get(login));
             } else {
-                message = USER_NOT_FOUND;
+                message = WRONG_CREDENTIALS;
             }
-
         } else {
-            message = INVALID_FIELS;
+            message = USER_NOT_FOUND;
         }
 
-        request.setAttribute( "msgLogin", message );
+        request.setAttribute( "msgLogin", message);
         this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
     }
-
-    private boolean validateField(String field) {
-        return (field != null && !field.isEmpty());
-    }
-
 }

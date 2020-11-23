@@ -17,8 +17,10 @@ public class AccessFilter implements Filter {
 
     private static final String REDIRECT_LOGIN = "/views/employee-login.jsp";
     private static final String NAME_USER_SESSION = "user";
+    private static final String CSS_PATH = "/css";
+    private static final String JS_PATH = "/js";
 
-    public void init(FilterConfig config) throws ServletException {}
+    public void init(FilterConfig config) {}
 
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
 
@@ -28,7 +30,7 @@ public class AccessFilter implements Filter {
         String path = request.getRequestURI().substring(request.getContextPath().length());
 
         /** Allow CSS and JS **/
-        if (path.startsWith("/css") || path.startsWith("/js")) {
+        if (path.startsWith(JS_PATH) || path.startsWith(CSS_PATH)) {
             chain.doFilter(request,response);
             return;
         }

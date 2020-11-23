@@ -20,9 +20,11 @@
     </form>
     <p>
     <%
-        String msgLogin = (String) request.getAttribute("msgLogin");
+        String MESSAGE = "msgLogin";
+
+        String msgLogin = (String) request.getAttribute(MESSAGE);
         if(msgLogin != null)
-            out.println(msgLogin);
+            out.println(MESSAGE);
     %>
     </p>
 </body>
