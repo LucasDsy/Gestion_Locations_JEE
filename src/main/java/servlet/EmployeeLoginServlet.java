@@ -25,7 +25,11 @@ public class EmployeeLoginServlet extends HttpServlet {
     private static final String USER_NOT_FOUND = "Utilisateur introuvable";
     private static final String WRONG_CREDENTIALS = "Identifiants incorrects";
     private static final String LOGIN_SUCCESS = "Connexion réussie";
-    private static final String INVALID_FIELDS = "Champs invalides";
+
+
+    /** SESSION **/
+    HttpSession session;
+    private static final String NAME_USER_SESSION = "user";
 
     private EmployeeService employeeService = new EmployeeService();
 
@@ -35,33 +39,18 @@ public class EmployeeLoginServlet extends HttpServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        Map<String, String> errors = new HashMap<>();
-
         String login = "";
         String password = "";
         String message = "";
 
-        if(this.validateField(request.getParameter(LOGIN)))
-            login = request.getParameter(LOGIN);
-        else
-            errors.put(LOGIN, "invalid field");
+        login = request.getParameter(LOGIN);
+        password = request.getParameter(PASSWORD);
 
-        if(this.validateField(request.getParameter(PASSWORD)))
-            password = request.getParameter(PASSWORD);
-        else
-            errors.put(PASSWORD, "invalid field");
-
-        if(errors.isEmpty()) {
-
-            if (this.employeeService.checkExist(login)) {
-                if (this.employeeService.checkPassword(login, password)) {
-                    message = LOGIN_SUCCESS;
-                    /**
-                     * TODO : gestion des sessions utilisateurs
-                     **/
-                } else {
-                    message = WRONG_CREDENTIALS;
-                }
+        if (this.employeeService.checkExist(login)) {
+            if (this.employeeService.checkPassword(login, password)) {
+                message = LOGIN_SUCCESS;
+                this.session = request.getSession();
+                this.session.setAttribute(NAME_USER_SESSION, this.employeeService.getWithLogin(login));
             } else {
                 message = USER_NOT_FOUND;
             }
