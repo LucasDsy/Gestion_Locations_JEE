@@ -34,7 +34,7 @@ public class AccessFilter implements Filter {
         }
 
         /** Allow login page **/
-        if(path.equals("/views/employee-login.jsp")) {
+        if(path.equals(REDIRECT_LOGIN)) {
             chain.doFilter(request,response);
             return;
         }
