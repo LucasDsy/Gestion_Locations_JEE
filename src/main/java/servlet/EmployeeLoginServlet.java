@@ -61,7 +61,7 @@ public class EmployeeLoginServlet extends HttpServlet {
             message = USER_NOT_FOUND;
         }
 
-        request.setAttribute( "msgLogin", message);
+        request.setAttribute(MESSAGE, message);
         this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
     }
 }
