@@ -14,7 +14,7 @@ import java.util.Map;
 public class EmployeeDisconnect extends HttpServlet {
 
     /** VIEWS **/
-    private static final String VIEW = "/login.jsp";
+    private static final String VIEW = "/views/employee-login.jsp";
 
     /** SESSION **/
     HttpSession session;

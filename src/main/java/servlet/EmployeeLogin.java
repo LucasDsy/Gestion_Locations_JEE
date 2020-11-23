@@ -15,7 +15,7 @@ import java.util.HashMap;
 public class EmployeeLogin extends HttpServlet {
 
     /** VIEWS **/
-    private static final String VIEW = "/login.jsp";
+    private static final String VIEW = "/views/employee-login.jsp";
 
     /** Attributes **/
     private static final String LOGIN = "login";
@@ -61,7 +61,7 @@ public class EmployeeLogin extends HttpServlet {
             if (this.employeeService.checkExist(login)) {
                 if (this.employeeService.checkPassword(login, password)) {
                     message = LOGIN_SUCCESS;
-                    this.session = request.getSession();
+                    this.session = request.getSession();Jm
                     this.session.setAttribute(NAME_USER_SESSION,this.employeeService.getEmployee(login));
                 } else {
                     message = WRONG_CREDENTIALS;

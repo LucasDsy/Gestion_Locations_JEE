@@ -15,7 +15,7 @@ import java.io.IOException;
 
 public class AccessFilter implements Filter {
 
-    private static final String REDIRECT_LOGIN = "/login.jsp";
+    private static final String REDIRECT_LOGIN = "/views/employee-login.jsp";
     private static final String NAME_USER_SESSION = "user";
 
     public void init(FilterConfig config) throws ServletException {}
