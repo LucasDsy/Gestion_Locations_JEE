@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.*;
 
-@WebServlet("/createEmployee")
+@WebServlet("/employee")
 public class EmployeeServlet extends HttpServlet {
     /** Attributes **/
     private static final String LASTNAME = "lastName";
