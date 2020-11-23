@@ -3,6 +3,7 @@ package model.people;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Past;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -26,6 +27,7 @@ public abstract class Person {
 
     @Column
     @Temporal(TemporalType.DATE)
+    @Past(message = "La date de naissance doit être antérieure à aujourd'hui")
     private Calendar birthDate;
 
     @Column(unique = true)
