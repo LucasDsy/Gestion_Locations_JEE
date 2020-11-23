@@ -25,9 +25,9 @@ public class AccessFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
 
-        /** Allow CSS and JS **/
         String path = request.getRequestURI().substring(request.getContextPath().length());
 
+        /** Allow CSS and JS **/
         if (path.startsWith("/css") || path.startsWith("/js")) {
             chain.doFilter(request,response);
             return;
