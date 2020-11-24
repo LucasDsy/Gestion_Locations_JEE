@@ -1,8 +1,0 @@
-hibernate.connection.driver_class=com.mysql.jdbc.Driver
-hibernate.connection.url=
-hibernate.connection.username=
-hibernate.connection.password=
-hibernate.dialect=org.hibernate.dialect.MariaDB53Dialect
-show_sql=false
-format_sql=false
-hibernate.hbm2ddl.auto=update
