@@ -15,20 +15,19 @@ public class EmployeeLoginServlet extends HttpServlet {
 
     /** Views **/
     public static final String LOGIN_VIEW = "/views/employee-login.jsp";
-    public static final String NAME_USER_SESSION = "user";
 
     /** Attributes **/
     private static final String LOGIN = "login";
     private static final String PASSWORD = "password";
+    private static final String MESSAGE = "msgLogin";
 
     /** Messsages **/
     private static final String USER_NOT_FOUND = "Utilisateur introuvable";
     private static final String WRONG_CREDENTIALS = "Identifiants incorrects";
     private static final String LOGIN_SUCCESS = "Connexion réussie";
 
-
     /** SESSION **/
-    private static final String INVALID_FIELDS = "Champs invalide";
+    private static final String NAME_USER_SESSION = "user";
 
     private final EmployeeService employeeService = new EmployeeService();
 
@@ -56,15 +55,10 @@ public class EmployeeLoginServlet extends HttpServlet {
             }
 
         } else {
-            message = INVALID_FIELDS;
+            message = WRONG_CREDENTIALS;
         }
 
-        request.setAttribute( "msgLogin", message );
+        request.setAttribute(MESSAGE, message );
         this.getServletContext().getRequestDispatcher(LOGIN_VIEW).forward(request, response);
     }
-
-    private boolean validateField(String field) {
-        return (field != null && !field.isEmpty());
-    }
-
 }

@@ -1,3 +1,4 @@
+
 package servlet;
 
 import model.people.Employee;
@@ -18,6 +19,7 @@ import java.util.*;
 
 @WebServlet("/employee")
 public class EmployeeServlet extends HttpServlet {
+
     /** Attributes **/
     private static final String LASTNAME = "lastName";
     private static final String FIRSTNAME = "firstName";
@@ -35,7 +37,6 @@ public class EmployeeServlet extends HttpServlet {
 
     /** Views **/
     private static final String VIEW = "/views/employee-creation.jsp";
-
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
