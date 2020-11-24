@@ -3,6 +3,7 @@ package servlet;
 import service.CustomerService;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,8 +11,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Customer extends HttpServlet {
-    final static String VIEW = "/pages/list-customers.jsp";
+@WebServlet("/customer")
+public class CustomerServlet extends HttpServlet {
+    final static String VIEW = "/views/list-customers.jsp";
     final static String RESULT = "result";
     final static String ERRORS = "errors";
     final static String ID = "id";
