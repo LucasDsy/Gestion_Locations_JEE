@@ -19,6 +19,10 @@ import static servlet.HomeServlet.INDEX_VIEW;
 )
 public class MainFilter implements Filter {
 
+    private static final String CSS_PATH = "/css";
+    private static final String JS_PATH = "/js";
+
+
     public void init(FilterConfig config) {}
 
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
@@ -29,6 +33,12 @@ public class MainFilter implements Filter {
         String path = request.getRequestURI().substring(request.getContextPath().length());
 
         request.getServletContext().log(path);
+
+        // Allow CSS and JS
+        if (path.startsWith(JS_PATH) || path.startsWith(CSS_PATH)) {
+            chain.doFilter(request,response);
+            return;
+        }
 
         // Allow login and home page
         if(path.equals("/login") || path.equals("/") || path.equals("/accueil") || path.equals(LOGIN_VIEW) || path.equals(INDEX_VIEW)) {
