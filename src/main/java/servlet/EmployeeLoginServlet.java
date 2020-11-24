@@ -7,15 +7,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Map;
-import java.util.HashMap;
 
 @WebServlet("/login")
 public class EmployeeLoginServlet extends HttpServlet {
 
     /** Views **/
-    private static final String VIEW = "/views/employee-login.jsp";
+    public static final String LOGIN_VIEW = "/views/employee-login.jsp";
+    public static final String NAME_USER_SESSION = "user";
 
     /** Attributes **/
     private static final String LOGIN = "login";
@@ -28,13 +28,12 @@ public class EmployeeLoginServlet extends HttpServlet {
 
 
     /** SESSION **/
-    HttpSession session;
-    private static final String NAME_USER_SESSION = "user";
+    private static final String INVALID_FIELDS = "Champs invalide";
 
-    private EmployeeService employeeService = new EmployeeService();
+    private final EmployeeService employeeService = new EmployeeService();
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
+        this.getServletContext().getRequestDispatcher(LOGIN_VIEW).forward(request, response);
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -42,6 +41,7 @@ public class EmployeeLoginServlet extends HttpServlet {
         String login = "";
         String password = "";
         String message = "";
+        HttpSession session;
 
         login = request.getParameter(LOGIN);
         password = request.getParameter(PASSWORD);
@@ -49,8 +49,8 @@ public class EmployeeLoginServlet extends HttpServlet {
         if (this.employeeService.checkExist(login)) {
             if (this.employeeService.checkPassword(login, password)) {
                 message = LOGIN_SUCCESS;
-                this.session = request.getSession();
-                this.session.setAttribute(NAME_USER_SESSION, this.employeeService.getWithLogin(login));
+                session = request.getSession();
+                session.setAttribute(NAME_USER_SESSION, this.employeeService.getWithLogin(login));
             } else {
                 message = USER_NOT_FOUND;
             }
@@ -60,7 +60,7 @@ public class EmployeeLoginServlet extends HttpServlet {
         }
 
         request.setAttribute( "msgLogin", message );
-        this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
+        this.getServletContext().getRequestDispatcher(LOGIN_VIEW).forward(request, response);
     }
 
     private boolean validateField(String field) {

@@ -4,7 +4,8 @@ public enum Role {
     ClientManager("Gestionnaire client"),
     RentalManager("Responsable location"),
     CommercialManager("Gestionnaire commercial"),
-    TechnicalManager("Gestionnaire technique");
+    TechnicalManager("Gestionnaire technique"),
+    Administrator("Administrateur");
 
     private final String wording;
 
