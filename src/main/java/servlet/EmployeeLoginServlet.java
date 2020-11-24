@@ -7,9 +7,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Map;
-import java.util.HashMap;
 
 @WebServlet("/login")
 public class EmployeeLoginServlet extends HttpServlet {
@@ -20,15 +19,14 @@ public class EmployeeLoginServlet extends HttpServlet {
     /** Attributes **/
     private static final String LOGIN = "login";
     private static final String PASSWORD = "password";
+    private static final String MESSAGE = "msgLogin";
 
     /** Messsages **/
     private static final String USER_NOT_FOUND = "Utilisateur introuvable";
     private static final String WRONG_CREDENTIALS = "Identifiants incorrects";
     private static final String LOGIN_SUCCESS = "Connexion réussie";
 
-
     /** SESSION **/
-    HttpSession session;
     private static final String NAME_USER_SESSION = "user";
 
     private EmployeeService employeeService = new EmployeeService();
@@ -38,6 +36,8 @@ public class EmployeeLoginServlet extends HttpServlet {
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        HttpSession session;
 
         String login = "";
         String password = "";
@@ -49,22 +49,17 @@ public class EmployeeLoginServlet extends HttpServlet {
         if (this.employeeService.checkExist(login)) {
             if (this.employeeService.checkPassword(login, password)) {
                 message = LOGIN_SUCCESS;
-                this.session = request.getSession();
-                this.session.setAttribute(NAME_USER_SESSION, this.employeeService.getWithLogin(login));
+                session = request.getSession();
+                session.setAttribute(NAME_USER_SESSION, this.employeeService.getWithLogin(login));
             } else {
                 message = USER_NOT_FOUND;
             }
 
         } else {
-            message = INVALID_FIELDS;
+            message = WRONG_CREDENTIALS;
         }
 
-        request.setAttribute( "msgLogin", message );
+        request.setAttribute(MESSAGE, message );
         this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
     }
-
-    private boolean validateField(String field) {
-        return (field != null && !field.isEmpty());
-    }
-
 }
