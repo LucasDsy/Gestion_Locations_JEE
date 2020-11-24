@@ -27,7 +27,7 @@ public class EmployeeLoginServlet extends HttpServlet {
     private static final String LOGIN_SUCCESS = "Connexion réussie";
 
     /** SESSION **/
-    private static final String NAME_USER_SESSION = "user";
+    public static final String NAME_USER_SESSION = "user";
 
     private final EmployeeService employeeService = new EmployeeService();
 
