@@ -32,8 +32,6 @@ public class MainFilter implements Filter {
 
         String path = request.getRequestURI().substring(request.getContextPath().length());
 
-        request.getServletContext().log(path);
-
         // Allow CSS and JS
         if (path.startsWith(JS_PATH) || path.startsWith(CSS_PATH)) {
             chain.doFilter(request,response);
@@ -42,7 +40,6 @@ public class MainFilter implements Filter {
 
         // Allow login and home page
         if(path.equals("/login") || path.equals("/") || path.equals("/accueil") || path.equals(LOGIN_VIEW) || path.equals(INDEX_VIEW)) {
-            request.getServletContext().log("IN : "+path);
             chain.doFilter(request,response);
             return;
         }
