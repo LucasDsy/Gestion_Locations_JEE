@@ -45,7 +45,6 @@ public class MainFilter implements Filter {
         }
 
         if (request.getSession().getAttribute(EmployeeLoginServlet.NAME_USER_SESSION) == null)
-            //request.getServletContext().getRequestDispatcher("/LocaJee/login").forward(request, response);
             response.sendRedirect("/LocaJee/login");
         else
             chain.doFilter(request,response);
