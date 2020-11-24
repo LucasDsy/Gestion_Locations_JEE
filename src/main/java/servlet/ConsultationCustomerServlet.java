@@ -22,7 +22,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @WebServlet("/displaycustomer")
-public class ConsultationCustomerServet extends HttpServlet {
+public class ConsultationCustomerServlet extends HttpServlet {
     /** Views **/
     private static final String VIEW = "/views/customer-consultation.jsp";
 
