@@ -1,16 +1,16 @@
 package service;
 
-import dao.DAO;
+import dao.VehicleDAO;
 import model.vehicle.Vehicle;
 
 public class VehicleService extends Service<Vehicle> {
 
     public VehicleService() {
-        super(new DAO<>(Vehicle.class));
+        super(new VehicleDAO());
     }
 
     @Override
-    protected DAO<Vehicle> getDAO() {
-        return this.dao;
+    protected VehicleDAO getDAO() {
+        return (VehicleDAO) this.dao;
     }
 }
