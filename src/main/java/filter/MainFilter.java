@@ -32,6 +32,17 @@ public class MainFilter implements Filter {
 
         String path = request.getRequestURI().substring(request.getContextPath().length());
 
+        //Allow CORS
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        response.addHeader("Access-Control-Allow-Methods","GET, OPTIONS, HEAD, PUT, POST, DELETE");
+
+
+        // For HTTP OPTIONS verb/method reply with ACCEPTED status code
+        if (request.getMethod().equals("OPTIONS")) {
+            response.setStatus(HttpServletResponse.SC_ACCEPTED);
+            return;
+        }
+
         // Allow CSS and JS
         if (path.startsWith(JS_PATH) || path.startsWith(CSS_PATH)) {
             chain.doFilter(request,response);
