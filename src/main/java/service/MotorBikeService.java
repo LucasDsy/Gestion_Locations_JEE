@@ -1,7 +1,6 @@
 package service;
 
 import dao.DAO;
-import model.vehicle.Car;
 import model.vehicle.MotorBike;
 
 public class MotorBikeService extends Service<MotorBike> {
