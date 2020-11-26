@@ -17,13 +17,13 @@ public class Location {
     @Column
     private Integer id;
 
-    @OneToOne(targetEntity = Vehicle.class, orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToOne(targetEntity = Vehicle.class, orphanRemoval = true, cascade = CascadeType.MERGE)
     private Vehicle vehicle;
 
-    @OneToOne(targetEntity = Customer.class, orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToOne(targetEntity = Customer.class, orphanRemoval = true, cascade = CascadeType.MERGE)
     private Customer customer;
 
-    @OneToOne(targetEntity = Employee.class, orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToOne(targetEntity = Employee.class, orphanRemoval = true, cascade = CascadeType.MERGE)
     private Employee employee;
 
     @Column
