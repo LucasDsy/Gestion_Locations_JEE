@@ -1,11 +1,14 @@
 <%@ page import = "java.io.*,java.util.*" contentType="text/html;charset=UTF-8" language="java"  %>
+<%@ page import="static servlet.EmployeeLoginServlet.MESSAGE" %>
+<%
+    String msgLogin = (String) request.getAttribute(MESSAGE);
+%>
 <html>
 <head>
     <title>Login</title>
+    <jsp:include page="../css/mdb-css.jsp"></jsp:include>
 </head>
 <body>
-    <span>${result}</span>
-    <span>${errors["sql"]}</span>
     <form method="post" action="login">
         <fieldset>
             <legend>Identifiants</legend>
@@ -18,14 +21,10 @@
         </fieldset>
         <input type="submit" value="Valider">
     </form>
-    <p>
-    <%
-        String MESSAGE = "msgLogin";
-
-        String msgLogin = (String) request.getAttribute(MESSAGE);
-        if(msgLogin != null)
-            System.out.println(msgLogin);
-    %>
-    </p>
+    <%if(msgLogin != null){%>
+        <p class="text-danger">
+            <%= msgLogin %>
+        </p>
+    <%}%>
 </body>
 </html>

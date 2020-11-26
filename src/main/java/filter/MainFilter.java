@@ -1,24 +1,27 @@
-package servlet;
+package filter;
+
+import servlet.EmployeeLoginServlet;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-@WebFilter(
-        urlPatterns = "/views/*",
-        dispatcherTypes = {DispatcherType.REQUEST, DispatcherType.FORWARD},
-        filterName = "AccessFilter"
-)
-public class AccessFilter implements Filter {
+import static servlet.EmployeeLoginServlet.LOGIN_VIEW;
+import static servlet.HomeServlet.INDEX_VIEW;
 
-    private static final String REDIRECT_LOGIN = "/views/employee-login.jsp";
-    private static final String NAME_USER_SESSION = "user";
+@WebFilter(
+        urlPatterns = {"/*"},
+        dispatcherTypes = {DispatcherType.REQUEST, DispatcherType.FORWARD},
+        filterName = "MainFilter"
+)
+public class MainFilter implements Filter {
+
     private static final String CSS_PATH = "/css";
     private static final String JS_PATH = "/js";
+
 
     public void init(FilterConfig config) {}
 
@@ -29,22 +32,31 @@ public class AccessFilter implements Filter {
 
         String path = request.getRequestURI().substring(request.getContextPath().length());
 
-        /** Allow CSS and JS **/
+        //Allow CORS
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        response.addHeader("Access-Control-Allow-Methods","GET, OPTIONS, HEAD, PUT, POST, DELETE");
+
+
+        // For HTTP OPTIONS verb/method reply with ACCEPTED status code
+        if (request.getMethod().equals("OPTIONS")) {
+            response.setStatus(HttpServletResponse.SC_ACCEPTED);
+            return;
+        }
+
+        // Allow CSS and JS
         if (path.startsWith(JS_PATH) || path.startsWith(CSS_PATH)) {
             chain.doFilter(request,response);
             return;
         }
 
-        /** Allow login page **/
-        if(path.equals(REDIRECT_LOGIN)) {
+        // Allow login and home page
+        if(path.equals("/login") || path.equals("/") || path.equals("/accueil") || path.equals(LOGIN_VIEW) || path.equals(INDEX_VIEW)) {
             chain.doFilter(request,response);
             return;
         }
 
-        HttpSession session = request.getSession();
-
-        if (session.getAttribute(NAME_USER_SESSION) == null)
-            request.getRequestDispatcher(REDIRECT_LOGIN).forward(request, response);
+        if (request.getSession().getAttribute(EmployeeLoginServlet.NAME_USER_SESSION) == null)
+            response.sendRedirect("/LocaJee/login");
         else
             chain.doFilter(request,response);
     }
