@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/logout")
-public class EmployeeDisconnectServlet extends HttpServlet {
+public class EmployeeLogoutServlet extends HttpServlet {
 
     /** VIEWS **/
     private static final String VIEW = "/views/employee-login.jsp";

@@ -21,14 +21,13 @@ public class EmployeeLoginServlet extends HttpServlet {
     public static final String LOGIN_VIEW = "/views/employee-login.jsp";
 
     /** Attributes **/
-    private static final String LOGIN = "login";
-    private static final String PASSWORD = "password";
+    public static final String LOGIN = "login";
+    public static final String PASSWORD = "password";
     public static final String MESSAGE = "msgLogin";
 
     /** Messsages **/
     private static final String USER_NOT_FOUND = "Utilisateur introuvable";
     private static final String WRONG_CREDENTIALS = "Identifiants incorrects";
-    private static final String LOGIN_SUCCESS = "Connexion réussie";
 
     /** SESSION **/
     public static final String NAME_USER_SESSION = "user";
@@ -53,16 +52,18 @@ public class EmployeeLoginServlet extends HttpServlet {
         login = request.getParameter(LOGIN);
         password = request.getParameter(PASSWORD);
 
+        request.getServletContext().log(login+" : "+password);
+
         if (this.employeeService.checkExist(login)) {
             if (this.employeeService.checkPassword(login, password)) {
                 session = request.getSession();
                 session.setAttribute(NAME_USER_SESSION, this.employeeService.getWithLogin(login));
             } else {
-                message = USER_NOT_FOUND;
+                message = WRONG_CREDENTIALS;
             }
 
         } else {
-            message = WRONG_CREDENTIALS;
+            message = USER_NOT_FOUND;
         }
 
         if(message!=null) {
