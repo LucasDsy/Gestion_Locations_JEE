@@ -15,18 +15,10 @@
         </div>
         <ul class="navbar-nav mr-auto">
             <% if (emp!= null) {%>
-                <% if (emp.getRoles().contains(Role.RentalManager) || isAdmin) {%>
                     <li class="nav-item"><a class="nav-link" href="location">Locations</a></li>
-                <%}%>
-                <% if (emp.getRoles().contains(Role.TechnicalManager) || isAdmin) {%>
                     <li class="nav-item"><a class="nav-link" href="vehicle">Véhicules</a></li>
-                <%}%>
-                <% if (emp.getRoles().contains(Role.ClientManager) || isAdmin) {%>
                     <li class="nav-item"><a class="nav-link" href="customer">Clients</a></li>
-                <%}%>
-                <% if (emp.getRoles().contains(Role.CommercialManager) || isAdmin) {%>
                     <li class="nav-item"><a class="nav-link" href="commercial">TOP 10 Clients</a></li>
-                <%}%>
                 <% if (isAdmin) {%>
                     <li class="nav-item"><a class="nav-link" href="employee">Employés</a></li>
                 <%}%>
