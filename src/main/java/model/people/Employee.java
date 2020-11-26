@@ -9,7 +9,7 @@ import java.util.Set;
 public class Employee extends Person {
     @Column
     @Enumerated(EnumType.STRING)
-    @ElementCollection(targetClass = Role.class)
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     private Set<Role> roles;
 
     @Column(unique = true)

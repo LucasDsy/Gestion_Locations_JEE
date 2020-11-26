@@ -15,7 +15,7 @@ public class EmployeeDAO extends DAO<Employee> {
      */
     public Employee findByLogin(String login){
         // Utilisation de HQL pour faire des requêtes
-        Employee res = (Employee) session.createQuery("from Employee p where p.login = :login")
+        Employee res = (Employee) session.createQuery("from Employee p inner join p.roles where p.login = :login")
                 .setParameter("login", login)
                 .setMaxResults(1)
                 .setFirstResult(0)
