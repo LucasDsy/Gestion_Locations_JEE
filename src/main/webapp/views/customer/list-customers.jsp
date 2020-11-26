@@ -77,29 +77,6 @@
 <script>
     var url = "<%= URLUtil.baseUrl("customer")%>";
 
-    function deleteCustomer(id) {
-        let data = {};
-        data.id = id;
-
-        fetch(url, {
-            method: 'DELETE',
-            body: JSON.stringify(data),
-            redirect: "follow",
-            headers: new Headers({
-                'Content-Type': 'application/json'
-            }),
-        })
-        .then(function (response) {
-                if(response.status === 200 || response.status === 0) {
-                    document.location.reload();
-                } else {
-                    response.json().then(data => writeErrors(data))
-                }
-            }
-        )
-        .catch(error => console.error(error))
-    }
-
     function updateCustomer(id) {
         let data = {
             id: id,
@@ -128,6 +105,29 @@
             })
 
         .catch(error => console.error(error))
+    }
+
+    function deleteObject(id) {
+        let data = {};
+        data.id = id;
+
+        fetch(url, {
+            method: 'DELETE',
+            body: JSON.stringify(data),
+            redirect: "follow",
+            headers: new Headers({
+                'Content-Type': 'application/json'
+            }),
+        })
+            .then(function (response) {
+                    if(response.status === 200 || response.status === 0) {
+                        document.location.reload();
+                    } else {
+                        response.json().then(data => writeErrors(data))
+                    }
+                }
+            )
+            .catch(error => console.error(error))
     }
 
     function writeErrors(json) {

@@ -5,6 +5,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import service.CustomerService;
 import utils.ConvertUtil;
+import utils.ErrorUtil;
 import utils.HibernateUtil;
 
 import javax.servlet.ServletException;
@@ -110,18 +111,9 @@ public class CustomerServlet extends HttpServlet {
         if (customerService.delete(customer)) {
             response.sendRedirect(request.getRequestURL().toString());
         } else {
-            response.setContentType("application/json");
-            request.setCharacterEncoding("UTF-8");
-            response.setStatus(400);
-
             String result = "Impossible de supprimer le client : " + customer.getFirstName() + " " + customer.getLastName() + ".";
-
-            PrintWriter out = response.getWriter();
-            out.write(buildJSONResponse(result, errors));
-            out.flush();
-            out.close();
+            ErrorUtil.sendError(response, RESULT, result, ERRORS, errors);
         }
-
     }
 
     @Override
@@ -157,28 +149,9 @@ public class CustomerServlet extends HttpServlet {
             customerService.update(customer);
             resp.sendRedirect(req.getRequestURL().toString());
         } else {
-            resp.setContentType("application/json");
-            resp.setCharacterEncoding("UTF-8");
-            resp.setStatus(400);
-
             result = "Impossible de mettre à jour le client " + customer.getFirstName() + " " + customer.getLastName();
-
-            PrintWriter out = resp.getWriter();
-            out.write(buildJSONResponse(result, errors));
-            out.flush();
-            out.close();
+            ErrorUtil.sendError(resp, RESULT, result, ERRORS, errors);
         }
-    }
-
-    private static String buildJSONResponse(String result, Set<String> errors) {
-        JSONObject resultJson = new JSONObject();
-        resultJson.put(RESULT, result);
-
-        JSONArray errorJsonArray = new JSONArray();
-        errors.stream().forEach(errorJsonArray::put);
-
-        resultJson.put(ERRORS, errorJsonArray);
-        return resultJson.toString();
     }
 
     private static String inputStreamToString(InputStream inputStream) {
