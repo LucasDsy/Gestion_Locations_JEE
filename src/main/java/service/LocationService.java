@@ -1,16 +1,20 @@
 package service;
 
 import dao.DAO;
+import dao.LocationDAO;
 import model.Location;
+
 
 public class LocationService extends Service<Location> {
 
     public LocationService() {
-        super(new DAO<>(Location.class));
+        super(new LocationDAO());
     }
 
     @Override
-    protected DAO<Location> getDAO() {
-        return this.dao;
+    protected LocationDAO getDAO() {
+        return (LocationDAO) this.dao;
     }
+
 }
+

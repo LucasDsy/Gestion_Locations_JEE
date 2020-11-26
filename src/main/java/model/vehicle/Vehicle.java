@@ -1,6 +1,7 @@
 package model.vehicle;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 /**
  * Classe Vehicule
@@ -19,6 +20,7 @@ public abstract class Vehicle implements Rentable {
     private String brand;
 
     @Column
+    @NotBlank(message = "Pas de champs vide pour le Modèle")
     private String model;
 
     @Column
