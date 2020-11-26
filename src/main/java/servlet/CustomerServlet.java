@@ -1,5 +1,6 @@
 package servlet;
 
+import jdk.nashorn.internal.parser.JSONParser;
 import model.people.Customer;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -16,6 +17,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Scanner;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.util.*;
@@ -29,6 +35,7 @@ public class CustomerServlet extends HttpServlet {
     public static final String FIRSTNAME = "firstName";
     public static final String EMAIL = "email";
     public static final String BIRTHDATE = "birthDate";
+    public static final String ROLES = "roles";
     public static final String CUSTOMER_ATTRIBUTE = "customers";
 
     /**
