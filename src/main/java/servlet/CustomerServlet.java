@@ -1,7 +1,7 @@
 package servlet;
 
-import jdk.nashorn.internal.parser.JSONParser;
 import model.people.Customer;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import service.CustomerService;
 import utils.ConvertUtil;
@@ -15,11 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.text.ParseException;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 @WebServlet("/customer")
 public class CustomerServlet extends HttpServlet {
@@ -108,16 +106,21 @@ public class CustomerServlet extends HttpServlet {
         Integer id = jsonObject.getInt("id");
 
         Customer customer = customerService.findById(id);
-        customerService.delete(customer);
 
-        String result = "Client " + customer.getFirstName() + " " + customer.getLastName() + " a été supprimé !";
+        if (customerService.delete(customer)) {
+            response.sendRedirect(request.getRequestURL().toString());
+        } else {
+            response.setContentType("application/json");
+            request.setCharacterEncoding("UTF-8");
+            response.setStatus(400);
 
-        request.setAttribute(ERRORS, errors);
-        request.setAttribute(RESULT, result);
+            String result = "Impossible de supprimer le client : " + customer.getFirstName() + " " + customer.getLastName() + ".";
 
-        this.getServletContext().getRequestDispatcher(CUSTOMER_VIEW).forward(request, response);
-
-        request.getServletContext().log(String.valueOf(response.getHeader("Access-Control-Allow-Origin")));
+            PrintWriter out = response.getWriter();
+            out.write(buildJSONResponse(result, errors));
+            out.flush();
+            out.close();
+        }
 
     }
 
@@ -151,15 +154,31 @@ public class CustomerServlet extends HttpServlet {
 
         String result;
         if (errors.isEmpty()) {
-            result = "Client " + customer.getFirstName() + " " + customer.getLastName() + " mis à jour !";
             customerService.update(customer);
+            resp.sendRedirect(req.getRequestURL().toString());
         } else {
-            result = "Impossible de mettre à jour le client " + customer.getFirstName() + " " + customer.getLastName();
-        }
-        req.setAttribute(ERRORS, errors);
-        req.setAttribute(RESULT, result);
+            resp.setContentType("application/json");
+            resp.setCharacterEncoding("UTF-8");
+            resp.setStatus(400);
 
-        this.getServletContext().getRequestDispatcher(CUSTOMER_VIEW).forward(req, resp);
+            result = "Impossible de mettre à jour le client " + customer.getFirstName() + " " + customer.getLastName();
+
+            PrintWriter out = resp.getWriter();
+            out.write(buildJSONResponse(result, errors));
+            out.flush();
+            out.close();
+        }
+    }
+
+    private static String buildJSONResponse(String result, Set<String> errors) {
+        JSONObject resultJson = new JSONObject();
+        resultJson.put(RESULT, result);
+
+        JSONArray errorJsonArray = new JSONArray();
+        errors.stream().forEach(errorJsonArray::put);
+
+        resultJson.put(ERRORS, errorJsonArray);
+        return resultJson.toString();
     }
 
     private static String inputStreamToString(InputStream inputStream) {

@@ -18,7 +18,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                <button type="button" class="btn btn-danger" onclick="deleteCustomer('<%=id%>')">Supprimer</button>
+                <button type="button" class="btn btn-danger"  data-dismiss="modal" onclick="deleteCustomer('<%=id%>')">Supprimer</button>
             </div>
         </div>
     </div>

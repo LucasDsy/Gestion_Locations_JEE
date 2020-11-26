@@ -82,8 +82,6 @@
         data.id = id;
 
         fetch(url, {
-            //credentials: 'same-origin', // 'include', default: 'omit'
-
             method: 'DELETE',
             body: JSON.stringify(data),
             redirect: "follow",
@@ -92,8 +90,11 @@
             }),
         })
         .then(function (response) {
-                console.log(response);
-                document.location.reload();
+                if(response.status === 200 || response.status === 0) {
+                    document.location.reload();
+                } else {
+                    response.json().then(data => writeErrors(data))
+                }
             }
         )
         .catch(error => console.error(error))
@@ -102,10 +103,10 @@
     function updateCustomer(id) {
         let data = {
             id: id,
-            lastName: document.querySelector("#customerLastname").value,
-            firstName: document.querySelector("#customerFirstname").value,
-            email: document.querySelector("#customerEmail").value,
-            birthDate: document.querySelector("#customerBirthdate").value
+            lastName: document.querySelector("#customerLastname"+id).value,
+            firstName: document.querySelector("#customerFirstname"+id).value,
+            email: document.querySelector("#customerEmail"+id).value,
+            birthDate: document.querySelector("#customerBirthdate"+id).value
         };
 
         fetch(url, {
@@ -113,16 +114,43 @@
 
             method: 'PUT',
             body: JSON.stringify(data),
-            redirect: "follow",
+            redirect: "manual",
             headers: new Headers({
                 'Content-Type': 'application/json'
             }),
         })
-        .then(function (response) {
-                console.log(response);
-                document.location.reload();
-            }
-        )
+        .then(response => {
+                if(response.status === 200 || response.status === 0) {
+                    document.location.reload();
+                } else {
+                    response.json().then(data => writeErrors(data))
+                }
+            })
+
         .catch(error => console.error(error))
+    }
+
+    function writeErrors(json) {
+
+        let div = document.createElement('div');
+        div.setAttribute("class", "containter");
+
+        let spanResult = document.createElement('span')
+        spanResult.setAttribute("class", "text-danger");
+        spanResult.innerText = json.<%= RESULT %>;
+
+        div.appendChild(spanResult);
+        div.appendChild(document.createElement('br'));
+
+        for(error of json.<%= ERRORS %>) {
+            let errorSpan = document.createElement('span')
+            errorSpan.setAttribute("class", "text-danger");
+            errorSpan.innerText = error;
+
+            div.appendChild(errorSpan);
+            div.appendChild(document.createElement('br'));
+        }
+
+        document.body.insertBefore(div, document.body.firstChild);
     }
 </script>
