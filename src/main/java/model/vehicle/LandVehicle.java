@@ -17,14 +17,6 @@ public abstract class LandVehicle extends Vehicle {
 
     public LandVehicle() {}
 
-    /* Protected methods */
-    @Override
-    @Transient
-    protected float getCoeff() {
-        return (1.0f / (float)(getHorsePower() * getState().valeur)) + TYPEVAL;
-    }
-
-
     /* Getters / Setters */
     public int getKilometers() {
         return kilometers;

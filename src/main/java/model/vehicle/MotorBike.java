@@ -22,6 +22,6 @@ class MotorBike extends LandVehicle {
     @Transient
     public float getPrixLocJour() {
         final float prixBase = 45.0f;
-        return prixBase * getCoeff();
+        return prixBase + horsePower;
     }
 }

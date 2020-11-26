@@ -25,7 +25,7 @@ public class Car extends LandVehicle {
     @Transient
     public float getPrixLocJour() {
         final float prixBase = 80.0f;
-        return prixBase * getCoeff();
+        return prixBase + horsePower;
     }
 
 

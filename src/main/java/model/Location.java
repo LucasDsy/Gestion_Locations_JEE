@@ -47,6 +47,7 @@ public class Location {
     @Column
     private Integer actualKm;
 
+    public final static Float DISCOUNT_RATE = 0.1f;
 
     /* Constructors */
     /**
@@ -132,7 +133,6 @@ public class Location {
         return (int) TimeUnit.MILLISECONDS.toDays(offset);
     }
 
-
     /* Computed Properties */
     /**
      * Returns the estimated price
@@ -140,7 +140,7 @@ public class Location {
      */
     @Transient
     public float getEstimatedPrice() {
-        return vehicle.getPrixLocJour() * (float) getNumberOfDays() + getExtraPriceForKm(estimatedKm);
+        return (vehicle.getPrixLocJour() * (float) getNumberOfDays()/30 + getExtraPriceForKm(estimatedKm)) * (discount ? 1-DISCOUNT_RATE : 1);
     }
 
     /**
@@ -149,8 +149,16 @@ public class Location {
      */
     @Transient
     public Float getActualPrice() {
-        if (actualKm == null) return null;
-        return vehicle.getPrixLocJour() * (float) getNumberOfDays() + getExtraPriceForKm(actualKm);
+        if (actualKm == null) return 0f;
+        return (vehicle.getPrixLocJour() * (float) getNumberOfDays()/30 + getExtraPriceForKm(actualKm)) * (discount ? 1-DISCOUNT_RATE : 1);
+    }
+
+    @Transient
+    public Float getPrice(){
+        float res = 0;
+        if(this.status == State.Completed) res = getActualPrice();
+        if(this.status == State.Booked || this.status == State.InProgress) res = getEstimatedPrice();
+        return res;
     }
 
 
