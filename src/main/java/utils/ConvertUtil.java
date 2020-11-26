@@ -30,9 +30,19 @@ public class ConvertUtil {
         return formatter.format(calendar.getTime());
     }
 
-    public static Set<Role> convertArrayStringToSet(String[] listArray){
-        return Stream.of(listArray)
+    public static Set<Role> convertArrayStringToSet(List<String> rolesList){
+        return rolesList.stream()
                 .map(Role::valueOf)
                 .collect(Collectors.toSet());
+
+    }
+
+    public static List<String> parseStringWithCommas(String roles) {
+        return Arrays.asList(roles.split(","));
+    }
+
+    public static String convertRolesListToString(Set<Role> roles) {
+        return String.join(",", Arrays.toString(roles.toArray()))
+                .replaceAll("\\[|\\]", "");
     }
 }
