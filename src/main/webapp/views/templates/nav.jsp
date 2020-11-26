@@ -22,7 +22,7 @@
                     <li class="nav-item"><a class="nav-link" href="vehicle">Véhicules</a></li>
                 <%}%>
                 <% if (emp.getRoles().contains(Role.ClientManager) || isAdmin) {%>
-                    <li class="nav-item"><a class="nav-link" href="client">Clients</a></li>
+                    <li class="nav-item"><a class="nav-link" href="customer">Clients</a></li>
                 <%}%>
                 <% if (emp.getRoles().contains(Role.CommercialManager) || isAdmin) {%>
                     <li class="nav-item"><a class="nav-link" href="top10">TOP 10 Clients</a></li>
