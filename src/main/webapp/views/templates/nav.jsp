@@ -5,6 +5,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     Employee emp = (Employee) request.getSession().getAttribute(NAME_USER_SESSION);
+    Boolean isAdmin = emp != null && emp.getRoles().contains(Role.Administrator);
 %>
 <!--Navbar -->
 <nav class="navbar sticky-top navbar-expand-lg navbar-dark blue">
@@ -14,17 +15,20 @@
         </div>
         <ul class="navbar-nav mr-auto">
             <% if (emp!= null) {%>
-                <% if (emp.getRoles().contains(Role.RentalManager)) {%>
+                <% if (emp.getRoles().contains(Role.RentalManager) || isAdmin) {%>
                     <li class="nav-item"><a class="nav-link" href="location">Locations</a></li>
                 <%}%>
-                <% if (emp.getRoles().contains(Role.TechnicalManager)) {%>
+                <% if (emp.getRoles().contains(Role.TechnicalManager) || isAdmin) {%>
                     <li class="nav-item"><a class="nav-link" href="vehicle">Véhicules</a></li>
                 <%}%>
-                <% if (emp.getRoles().contains(Role.ClientManager)) {%>
+                <% if (emp.getRoles().contains(Role.ClientManager) || isAdmin) {%>
                     <li class="nav-item"><a class="nav-link" href="client">Clients</a></li>
                 <%}%>
-                <% if (emp.getRoles().contains(Role.ClientManager)) {%>
+                <% if (emp.getRoles().contains(Role.ClientManager) || isAdmin) {%>
                     <li class="nav-item"><a class="nav-link" href="top10">TOP 10 Clients</a></li>
+                <%}%>
+                <% if (isAdmin) {%>
+                    <li class="nav-item"><a class="nav-link" href="employee">Employés</a></li>
                 <%}%>
             <%}%>
         <ul/>
