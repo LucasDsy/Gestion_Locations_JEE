@@ -1,10 +1,11 @@
 package servlet;
 
-import jdk.nashorn.internal.parser.JSONParser;
 import model.people.Customer;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import service.CustomerService;
 import utils.ConvertUtil;
+import utils.ErrorUtil;
 import utils.HibernateUtil;
 
 import javax.servlet.ServletException;
@@ -15,11 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.text.ParseException;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 @WebServlet("/customer")
 public class CustomerServlet extends HttpServlet {
@@ -108,17 +107,13 @@ public class CustomerServlet extends HttpServlet {
         Integer id = jsonObject.getInt("id");
 
         Customer customer = customerService.findById(id);
-        customerService.delete(customer);
 
-        String result = "Client " + customer.getFirstName() + " " + customer.getLastName() + " a été supprimé !";
-
-        request.setAttribute(ERRORS, errors);
-        request.setAttribute(RESULT, result);
-
-        this.getServletContext().getRequestDispatcher(CUSTOMER_VIEW).forward(request, response);
-
-        request.getServletContext().log(String.valueOf(response.getHeader("Access-Control-Allow-Origin")));
-
+        if (customerService.delete(customer)) {
+            response.sendRedirect(request.getRequestURL().toString());
+        } else {
+            String result = "Impossible de supprimer le client : " + customer.getFirstName() + " " + customer.getLastName() + ".";
+            ErrorUtil.sendError(response, RESULT, result, ERRORS, errors);
+        }
     }
 
     @Override
@@ -151,15 +146,12 @@ public class CustomerServlet extends HttpServlet {
 
         String result;
         if (errors.isEmpty()) {
-            result = "Client " + customer.getFirstName() + " " + customer.getLastName() + " mis à jour !";
             customerService.update(customer);
+            resp.sendRedirect(req.getRequestURL().toString());
         } else {
             result = "Impossible de mettre à jour le client " + customer.getFirstName() + " " + customer.getLastName();
+            ErrorUtil.sendError(resp, RESULT, result, ERRORS, errors);
         }
-        req.setAttribute(ERRORS, errors);
-        req.setAttribute(RESULT, result);
-
-        this.getServletContext().getRequestDispatcher(CUSTOMER_VIEW).forward(req, resp);
     }
 
     private static String inputStreamToString(InputStream inputStream) {

@@ -21,25 +21,25 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="form-group col">
-                        <label for="customerLastname">Nom</label>
-                        <input type="text" class="form-control" id="customerLastname" name="lastName" required pattern="[A-z]{2,}" value=<%= lastName %>>
+                        <label for="customerLastname<%= id %>">Nom</label>
+                        <input type="text" class="form-control" id="customerLastname<%= id %>" name="lastName" required pattern="[A-z]{2,}" value=<%= lastName %>>
                     </div>
 
                     <div class="form-group col">
-                        <label for="customerFirstname">Prénom</label>
-                        <input type="text" class="form-control" id="customerFirstname" name="firstName" required pattern="[A-z]{2,}" value=<%= firstName %>>
+                        <label for="customerFirstname<%= id %>">Prénom</label>
+                        <input type="text" class="form-control" id="customerFirstname<%= id %>" name="firstName" required pattern="[A-z]{2,}" value=<%= firstName %>>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="form-group col">
-                        <label for="customerBirthdate">Date de naissance</label>
-                        <input type="date" class="form-control" id="customerBirthdate" name="birthDate" required value=<%= birthDate %>>
+                        <label for="customerBirthdate<%= id %>">Date de naissance</label>
+                        <input type="date" class="form-control" id="customerBirthdate<%= id %>" name="birthDate" required value=<%= birthDate %>>
                     </div>
 
                     <div class="form-group col">
-                        <label for="customerEmail">Adresse email</label>
-                        <input type="email" class="form-control" id="customerEmail" name="email" required pattern="[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+" value=<%= email %>>
+                        <label for="customerEmail<%= id %>">Adresse email</label>
+                        <input type="email" class="form-control" id="customerEmail<%= id %>" name="email" required pattern="[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+" value=<%= email %>>
                     </div>
                 </div>
             </div>
@@ -47,7 +47,7 @@
             <div class="modal-footer">
                 <div class="row" style="float: right">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                    <button type="button" class="btn btn-primary" onclick="updateCustomer(<%= id %>)">Modifier</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="updateCustomer(<%= id %>)">Modifier</button>
                 </div>
             </div>
         </div>
