@@ -164,6 +164,10 @@ public class Location {
 
     /* Getter / Setters */
 
+    public Integer getId() {
+        return this.id;
+    }
+
     public Vehicle getVehicle() {
         return vehicle;
     }
