@@ -6,11 +6,13 @@ import model.people.State;
 import model.vehicle.Vehicle;
 import model.people.Employee;
 
+import org.json.JSONObject;
 import service.LocationService;
 import service.VehicleService;
 import service.CustomerService;
 
 import utils.ConvertUtil;
+import utils.ErrorUtil;
 import utils.HibernateUtil;
 
 import javax.servlet.ServletException;
@@ -21,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -29,6 +32,8 @@ import java.util.*;
 public class LocationServlet extends HttpServlet {
 
     /** Attributes **/
+    public static final String LOCATION_ATTRIBUTE = "locationsList";
+    private static final String ID = "id";
     public static final String ERRORS = "errors";
     public static final String RESULT = "result";
     public static final String VEHICLES_LIST = "vehiclesList";
@@ -41,7 +46,7 @@ public class LocationServlet extends HttpServlet {
     public static final String END_DATE = "endDate";
 
     /** Views **/
-    private static final String VIEW = "/views/location-creation.jsp";
+    private static final String LOCATION_VIEW = "/views/location/list-location.jsp";
 
     /** Errors **/
     private static final String INVALID_FIELDS = "Les informations envoyées sont incorrectes";
@@ -54,16 +59,20 @@ public class LocationServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        List<Location> locations = new LocationService().findAll();
+        request.setAttribute(LOCATION_ATTRIBUTE, locations);
+
         VehicleService serviceVehicle = new VehicleService();
-        CustomerService serviceCustomer = new CustomerService();
+         CustomerService serviceCustomer = new CustomerService();
 
-        List<Vehicle> listVehicles = serviceVehicle.getAvailable();
-        List<Customer> listCustomers = serviceCustomer.findAll();
+         List<Vehicle> listVehicles = serviceVehicle.getAvailable();
+         List<Customer> listCustomers = serviceCustomer.findAll();
 
-        request.setAttribute(VEHICLES_LIST,listVehicles);
-        request.setAttribute(CUSTOMERS_LIST,listCustomers);
+         request.setAttribute(VEHICLES_LIST,listVehicles);
+         request.setAttribute(CUSTOMERS_LIST,listCustomers);
 
-        this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
+        this.getServletContext().getRequestDispatcher(LOCATION_VIEW).forward(request, response);
+
     }
 
     @Override
@@ -101,55 +110,77 @@ public class LocationServlet extends HttpServlet {
             errors.add(INVALID_FIELDS);
         }
 
-        if(errors.isEmpty()) {
 
-            /** Get vehicle **/
-            vehicle = serviceVehicle.findById(idVehicle);
-            if (vehicle == null)
-                errors.add(VEHICLE_NOT_FOUND);
+        /** Get vehicle **/
+        vehicle = serviceVehicle.findById(idVehicle);
+        if (vehicle == null)
+            errors.add(VEHICLE_NOT_FOUND);
 
-            /** Get customer **/
-            customer = serviceCustomer.findById(idCustomer);
-            if (customer == null)
-                errors.add(CUSTOMER_NOT_FOUND);
+        /** Get customer **/
+        customer = serviceCustomer.findById(idCustomer);
+        if (customer == null)
+            errors.add(CUSTOMER_NOT_FOUND);
 
-            /** Get employee **/
-            HttpSession session = request.getSession();
-            if (session.getAttribute(NAME_USER_SESSION) != null)
-                employee = (Employee) session.getAttribute(NAME_USER_SESSION);
+        /** Get employee **/
+        HttpSession session = request.getSession();
+        if (session.getAttribute(NAME_USER_SESSION) != null)
+            employee = (Employee) session.getAttribute(NAME_USER_SESSION);
 
-            if (employee == null)
-                errors.add(EMPLOYEE_NOT_FOUND);
+        if (employee == null)
+            errors.add(EMPLOYEE_NOT_FOUND);
 
-            /** Deal with Status **/
-            Calendar calendar = Calendar.getInstance();
-            Date todayDate = calendar.getTime();
-            Date start = startDate.getTime();
-            Date end = endDate.getTime();
+        /** Deal with Status **/
+        Calendar calendar = Calendar.getInstance();
+        Date todayDate = calendar.getTime();
+        Date start = startDate.getTime();
+        Date end = endDate.getTime();
 
-            if(todayDate.compareTo(start) >= 0)
-                state = State.InProgress;
-            else
-                state = State.Booked;
+        if(todayDate.compareTo(start) >= 0)
+            state = State.InProgress;
+        else
+            state = State.Booked;
 
-            if (errors.isEmpty()) {
 
-                Location location = new Location(vehicle, customer, employee, state, startDate, endDate, discount, estimatedKilometers);
+        Location location = new Location(vehicle, customer, employee, state, startDate, endDate, discount, estimatedKilometers);
 
-                //vérification par hibernate que les champs sont valides
-                HibernateUtil.getValidator()
-                        .validate(location)
-                        .stream()
-                        .map(ConstraintViolation::getMessage)
-                        .forEach(errors::add);
+        //vérification par hibernate que les champs sont valides
+        HibernateUtil.getValidator()
+                .validate(location)
+                .stream()
+                .map(ConstraintViolation::getMessage)
+                .forEach(errors::add);
 
-                service.create(location);
-            }
+        if (errors.isEmpty()) {
+            service.create(location);
+            response.sendRedirect(request.getRequestURL().toString());
+        } else {
+            String result = "Impossible de créer la location.";
+            ErrorUtil.sendError(response, RESULT, result, ERRORS, errors);
         }
-
-        request.setAttribute(ERRORS, errors);
-        request.setAttribute(RESULT, errors.isEmpty());
-
-        this.getServletContext().getRequestDispatcher(VIEW).forward(request, response);
     }
+
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HashSet<String> errors = new HashSet<>();
+        LocationService locationService = new LocationService();
+        String body = inputStreamToString(request.getInputStream());
+
+        JSONObject jsonObject = new JSONObject(body);
+        Integer id = jsonObject.getInt(ID);
+
+        Location location = locationService.findById(id);
+
+        if (locationService.delete(location)) {
+            response.sendRedirect(request.getRequestURL().toString());
+        } else {
+            String result = "Location " + location.getId() + " a été supprimé !";
+            ErrorUtil.sendError(response, RESULT, result, ERRORS, errors);
+        }
+    }
+
+    private static String inputStreamToString(InputStream inputStream) {
+        Scanner scanner = new Scanner(inputStream, "UTF-8");
+        return scanner.hasNext() ? scanner.useDelimiter("\\A").next() : "";
+    }
+
 }
