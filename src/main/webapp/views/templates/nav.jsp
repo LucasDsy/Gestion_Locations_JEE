@@ -1,6 +1,7 @@
 <%@ page import="model.people.Employee" %>
 <%@ page import="static servlet.EmployeeLoginServlet.NAME_USER_SESSION" %>
 <%@ page import="model.people.Role" %>
+<%@ page import="utils.URLUtil" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     Employee emp = (Employee) request.getSession().getAttribute(NAME_USER_SESSION);
@@ -9,7 +10,7 @@
 <nav class="navbar sticky-top navbar-expand-lg navbar-dark blue">
     <div class="collapse navbar-collapse col-md-8">
         <div class="nav-bar brand mr-2">
-            <a class="navbar-brand" href="/">LocaJee</a>
+            <a class="navbar-brand" href="<%= URLUtil.baseUrl("") %>">LocaJee</a>
         </div>
         <ul class="navbar-nav mr-auto">
             <% if (emp!= null) {%>
