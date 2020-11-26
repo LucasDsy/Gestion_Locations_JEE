@@ -14,23 +14,23 @@ public abstract class Vehicle implements Rentable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
-    private Integer id;
+    protected Integer id;
 
     @Column
-    private String brand;
+    protected String brand;
 
     @Column
     @NotBlank(message = "Pas de champs vide pour le Modèle")
-    private String model;
+    protected String model;
 
     @Column
-    private int horsePower;
+    protected int horsePower;
 
     @Column
-    private int maxSpeed;
+    protected int maxSpeed;
 
     @Enumerated(EnumType.STRING)
-    private State state;
+    protected State state;
 
 
     /* Constructeur */
@@ -43,12 +43,6 @@ public abstract class Vehicle implements Rentable {
     }
 
     public Vehicle() {}
-
-
-    /* abstract methods */
-    @Transient
-    abstract float getCoeff();
-
 
     /* Getters / Setters */
     public String getBrand() {

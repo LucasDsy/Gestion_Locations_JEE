@@ -23,6 +23,6 @@ class Plane extends AirVehicle {
     @Transient
     public float getPrixLocJour() {
         final float prixBase = 150.0f;
-        return prixBase * getCoeff();
+        return prixBase + horsePower;
     }
 }

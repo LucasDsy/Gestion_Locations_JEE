@@ -26,14 +26,6 @@ public abstract class AirVehicle extends Vehicle {
     public AirVehicle() {}
 
 
-    /* Protected methods */
-    @Override
-    @Transient
-    protected float getCoeff() {
-        return ((float) 1/(getHorsePower() * getState().valeur)) + TYPEVAL;
-    }
-
-
     /* Getters / Setters */
     public int getCruisingSpeed() {
         return cruisingSpeed;
