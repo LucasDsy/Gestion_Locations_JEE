@@ -26,7 +26,7 @@ public class ConvertUtil {
     }
 
     public static String convertDateCalendar(Calendar calendar) {
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         return formatter.format(calendar.getTime());
     }
 

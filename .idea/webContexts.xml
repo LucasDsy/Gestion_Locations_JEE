@@ -5,6 +5,7 @@
       <map>
         <entry key="file://$PROJECT_DIR$/src/main/webapp/templates/edit-car.jsp" value="file://$PROJECT_DIR$/src/main/webapp/templates" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/views/employee-creation.jsp" value="file://$PROJECT_DIR$/src/main/webapp/views" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/views/list-customers.jsp" value="file://$PROJECT_DIR$/src/main/webapp/views" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/views/employee-login.jsp" value="file://$PROJECT_DIR$/src/main/webapp/views" />
       </map>
     </option>
