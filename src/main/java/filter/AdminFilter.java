@@ -32,7 +32,7 @@ public class AdminFilter implements Filter {
             chain.doFilter(request,response);
             return;
         }
-        response.sendRedirect("/LocaJee/");
+        response.sendError(response.SC_FORBIDDEN);
     }
 
     public void destroy() {}

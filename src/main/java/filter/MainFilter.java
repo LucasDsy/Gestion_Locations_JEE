@@ -49,8 +49,8 @@ public class MainFilter implements Filter {
             return;
         }
 
-        // Allow login and home page
-        if(path.equals("/login") || path.equals("/") || path.equals("/accueil") || path.equals(LOGIN_VIEW) || path.equals(INDEX_VIEW)) {
+        // Allow login
+        if(path.equals("/login") || path.equals(LOGIN_VIEW)) {
             chain.doFilter(request,response);
             return;
         }
