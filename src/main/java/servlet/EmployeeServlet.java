@@ -113,7 +113,7 @@ public class EmployeeServlet extends HttpServlet {
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HashSet<String> errors = new HashSet<>();
         EmployeeService employeeService = new EmployeeService();
-        String body = inputStreamToString(request.getInputStream());
+        String body = ConvertUtil.inputStreamToString(request.getInputStream());
         JSONObject jsonObject = new JSONObject(body);
         Integer id = jsonObject.getInt(ID);
         Employee employee = employeeService.findById(id);
@@ -183,17 +183,18 @@ public class EmployeeServlet extends HttpServlet {
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HashSet<String> errors = new HashSet<>();
         EmployeeService employeeService = new EmployeeService();
-        String body = inputStreamToString(request.getInputStream());
+        String body = ConvertUtil.inputStreamToString(request.getInputStream());
 
         JSONObject jsonObject = new JSONObject(body);
         Integer id = jsonObject.getInt(ID);
 
         Employee employee = employeeService.findById(id);
-        employeeService.delete(employee);
+
+        if (!employeeService.delete(employee)) {
+            String result = "Impossible de supprimer l'utilisateur " + employee.getFirstName() + " " + employee.getLastName();
+            ErrorUtil.sendError(response, RESULT, result, ERRORS, errors);
+        }
     }
 
-    private static String inputStreamToString(InputStream inputStream) {
-        Scanner scanner = new Scanner(inputStream, "UTF-8");
-        return scanner.hasNext() ? scanner.useDelimiter("\\A").next() : "";
-    }
+
 }

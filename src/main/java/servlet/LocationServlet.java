@@ -163,7 +163,7 @@ public class LocationServlet extends HttpServlet {
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HashSet<String> errors = new HashSet<>();
         LocationService locationService = new LocationService();
-        String body = inputStreamToString(request.getInputStream());
+        String body = ConvertUtil.inputStreamToString(request.getInputStream());
 
         JSONObject jsonObject = new JSONObject(body);
         Integer id = jsonObject.getInt(ID);
@@ -177,10 +177,4 @@ public class LocationServlet extends HttpServlet {
             ErrorUtil.sendError(response, RESULT, result, ERRORS, errors);
         }
     }
-
-    private static String inputStreamToString(InputStream inputStream) {
-        Scanner scanner = new Scanner(inputStream, "UTF-8");
-        return scanner.hasNext() ? scanner.useDelimiter("\\A").next() : "";
-    }
-
 }
