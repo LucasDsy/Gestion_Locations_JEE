@@ -23,8 +23,6 @@
     Employee connected = (Employee) request.getSession().getAttribute(NAME_USER_SESSION);
     boolean canEdit = connected.getRoles().contains(Role.Administrator) || connected.getRoles().contains(Role.ClientManager);
 
-    String result = (String) request.getAttribute(RESULT);
-    HashSet<String> errorsList = (HashSet<String>) request.getAttribute(VehicleServlet.ERRORS);
     List<Vehicle> vehicles = (List<Vehicle>) request.getAttribute(VehicleServlet.VEHICLE_ATTRIBUTE);
 %>
 
@@ -38,22 +36,13 @@
     <header>
         <jsp:include page="/views/templates/nav.jsp"/>
     </header>
-    <% if(errorsList != null && !errorsList.isEmpty()){%>
-    <div class="container">
-        <span class="text-danger"><%=result%></span><br/>
-        <% for(String err : errorsList){%>
-        <span class="text-danger"><%=err%></span><br/>
-        <%}%>
-    </div>
-    <%} else if(result!=null){%>
-    <span class="text-success"><%=result%></span><br/>
-    <%}%>
 
     <div class="container-fluid">
         <div class="row">
             <table class="table table-striped">
                 <thead>
                     <tr>
+                        <th scope="col">#</th>
                         <th scope="col">Type</th>
                         <th scope="col">Marque</th>
                         <th scope="col">Modèle</th>
@@ -70,7 +59,8 @@
                         <% if (vehicle instanceof Car) { %>
                             <% Car car = (Car) vehicle; %>
                             <tr>
-                                <th scope="row">Voiture</th>
+                                <th scope="row"><%= vehicle.getId() %></th>
+                                <td>Voiture</td>
                                 <td><%= vehicle.getBrand() %></td>
                                 <td><%= vehicle.getModel() %></td>
                                 <td><%= vehicle.getPrixLocJour() %></td>
@@ -105,7 +95,8 @@
                         <% } else if (vehicle instanceof MotorBike) { %>
                             <% MotorBike moto = (MotorBike) vehicle; %>
                             <tr>
-                                <th scope="row">Moto</th>
+                                <th scope="row"><%= vehicle.getId() %></th>
+                                <td>Moto</td>
                                 <td><%= vehicle.getBrand() %></td>
                                 <td><%= vehicle.getModel() %></td>
                                 <td><%= vehicle.getPrixLocJour() %></td>
@@ -139,7 +130,8 @@
                         <% } else if (vehicle instanceof Plane) { %>
                             <% Plane plane = (Plane) vehicle; %>
                             <tr>
-                                <th scope="row">Avion</th>
+                                <th scope="row"><%= vehicle.getId() %></th>
+                                <td>Avion</td>
                                 <td><%= vehicle.getBrand() %></td>
                                 <td><%= vehicle.getModel() %></td>
                                 <td><%= vehicle.getPrixLocJour() %></td>
