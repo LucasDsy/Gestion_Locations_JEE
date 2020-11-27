@@ -130,7 +130,7 @@ public class Location {
         final long millisDebut = startDate.getTimeInMillis();
         final long millisFin = endDate.getTimeInMillis();
         final long offset = Math.abs(millisFin - millisDebut);
-        return (int) TimeUnit.MILLISECONDS.toDays(offset);
+        return Math.max((int) TimeUnit.MILLISECONDS.toDays(offset), 1);
     }
 
     /* Computed Properties */

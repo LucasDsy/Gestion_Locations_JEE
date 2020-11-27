@@ -52,8 +52,6 @@ public class EmployeeLoginServlet extends HttpServlet {
         login = request.getParameter(LOGIN);
         password = request.getParameter(PASSWORD);
 
-        request.getServletContext().log(login+" : "+password);
-
         if (this.employeeService.checkExist(login)) {
             if (this.employeeService.checkPassword(login, password)) {
                 session = request.getSession();
