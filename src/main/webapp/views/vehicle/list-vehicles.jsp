@@ -8,6 +8,9 @@
 <%@ page import="java.util.HashSet" %>
 <%@ page import="static servlet.VehicleServlet.RESULT" %>
 <%@ page import="static servlet.VehicleServlet.ERRORS" %>
+<%@ page import="model.people.Employee" %>
+<%@ page import="model.people.Role" %>
+<%@ page import="static servlet.EmployeeLoginServlet.NAME_USER_SESSION" %>
 <%--
   Created by IntelliJ IDEA.
   User: alexis_choupault
@@ -17,6 +20,9 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%
+    Employee connected = (Employee) request.getSession().getAttribute(NAME_USER_SESSION);
+    boolean canEdit = connected.getRoles().contains(Role.Administrator) || connected.getRoles().contains(Role.ClientManager);
+
     String result = (String) request.getAttribute(RESULT);
     HashSet<String> errorsList = (HashSet<String>) request.getAttribute(VehicleServlet.ERRORS);
     List<Vehicle> vehicles = (List<Vehicle>) request.getAttribute(VehicleServlet.VEHICLE_ATTRIBUTE);
@@ -29,6 +35,9 @@
     <jsp:include page="/css/mdb-css.jsp"/>
 </head>
 <body>
+    <header>
+        <jsp:include page="/views/templates/nav.jsp"/>
+    </header>
     <% if(errorsList != null && !errorsList.isEmpty()){%>
     <div class="container">
         <span class="text-danger"><%=result%></span><br/>
@@ -40,7 +49,7 @@
     <span class="text-success"><%=result%></span><br/>
     <%}%>
 
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <table class="table table-striped">
                 <thead>
@@ -49,8 +58,10 @@
                         <th scope="col">Marque</th>
                         <th scope="col">Modèle</th>
                         <th scope="col">Prix jour</th>
-                        <th scope="col">Modifier</th>
-                        <th scope="col">Supprimer</th>
+                        <% if (canEdit) { %>
+                            <th scope="col">Modifier</th>
+                            <th scope="col">Supprimer</th>
+                        <% } %>
                     </tr>
                 </thead>
 
@@ -63,31 +74,33 @@
                                 <td><%= vehicle.getBrand() %></td>
                                 <td><%= vehicle.getModel() %></td>
                                 <td><%= vehicle.getPrixLocJour() %></td>
-                                <td>
-                                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editCar<%= car.getId() %>">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                </td>
-                                <td>
-                                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteVehicle<%= car.getId() %>">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                                <jsp:include page="modal/edit-car.jsp" flush="true">
-                                    <jsp:param name="id" value="<%= car.getId().toString() %>"/>
-                                    <jsp:param name="brandname" value="<%= car.getBrand() %>"/>
-                                    <jsp:param name="modelname" value="<%= car.getModel() %>"/>
-                                    <jsp:param name="horsepower" value="<%= car.getHorsePower() %>"/>
-                                    <jsp:param name="maxspeed" value="<%= car.getMaxSpeed() %>"/>
-                                    <jsp:param name="vehiclestate" value="<%= car.getState().valeur %>"/>
-                                    <jsp:param name="kilometers" value="<%= car.getKilometers() %>"/>
-                                    <jsp:param name="seatingCapacity" value="<%= car.getSeatingCapacity() %>"/>
-                                </jsp:include>
-                                <jsp:include page="modal/delete-vehicle.jsp" flush="true">
-                                    <jsp:param name="id" value="<%= car.getId() %>"/>
-                                    <jsp:param name="brandname" value="<%= car.getBrand() %>"/>
-                                    <jsp:param name="modelname" value="<%= car.getModel() %>"/>
-                                </jsp:include>
+                                <% if (canEdit) { %>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editCar<%= car.getId() %>">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteVehicle<%= car.getId() %>">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                    <jsp:include page="modal/edit-car.jsp" flush="true">
+                                        <jsp:param name="id" value="<%= car.getId().toString() %>"/>
+                                        <jsp:param name="brandname" value="<%= car.getBrand() %>"/>
+                                        <jsp:param name="modelname" value="<%= car.getModel() %>"/>
+                                        <jsp:param name="horsepower" value="<%= car.getHorsePower() %>"/>
+                                        <jsp:param name="maxspeed" value="<%= car.getMaxSpeed() %>"/>
+                                        <jsp:param name="vehiclestate" value="<%= car.getState().valeur %>"/>
+                                        <jsp:param name="kilometers" value="<%= car.getKilometers() %>"/>
+                                        <jsp:param name="seatingCapacity" value="<%= car.getSeatingCapacity() %>"/>
+                                    </jsp:include>
+                                    <jsp:include page="modal/delete-vehicle.jsp" flush="true">
+                                        <jsp:param name="id" value="<%= car.getId() %>"/>
+                                        <jsp:param name="brandname" value="<%= car.getBrand() %>"/>
+                                        <jsp:param name="modelname" value="<%= car.getModel() %>"/>
+                                    </jsp:include>
+                                <% } %>
                             </tr>
                         <% } else if (vehicle instanceof MotorBike) { %>
                             <% MotorBike moto = (MotorBike) vehicle; %>
@@ -96,30 +109,32 @@
                                 <td><%= vehicle.getBrand() %></td>
                                 <td><%= vehicle.getModel() %></td>
                                 <td><%= vehicle.getPrixLocJour() %></td>
-                                <td>
-                                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editMotorbike<%= moto.getId() %>">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                </td>
-                                <td>
-                                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteVehicle<%= moto.getId() %>">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                                <jsp:include page="modal/edit-motorbike.jsp" flush="true">
-                                    <jsp:param name="id" value="<%= moto.getId() %>"/>
-                                    <jsp:param name="brandname" value="<%= moto.getBrand() %>"/>
-                                    <jsp:param name="modelname" value="<%= moto.getModel() %>"/>
-                                    <jsp:param name="horsepower" value="<%= moto.getHorsePower() %>"/>
-                                    <jsp:param name="maxspeed" value="<%= moto.getMaxSpeed() %>"/>
-                                    <jsp:param name="vehiclestate" value="<%= moto.getState().valeur %>"/>
-                                    <jsp:param name="kilometers" value="<%= moto.getKilometers() %>"/>
-                                </jsp:include>
-                                <jsp:include page="modal/delete-vehicle.jsp" flush="true">
-                                    <jsp:param name="id" value="<%= moto.getId() %>"/>
-                                    <jsp:param name="brandname" value="<%= moto.getBrand() %>"/>
-                                    <jsp:param name="modelname" value="<%= moto.getModel() %>"/>
-                                </jsp:include>
+                                <% if (canEdit) { %>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editMotorbike<%= moto.getId() %>">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteVehicle<%= moto.getId() %>">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                    <jsp:include page="modal/edit-motorbike.jsp" flush="true">
+                                        <jsp:param name="id" value="<%= moto.getId() %>"/>
+                                        <jsp:param name="brandname" value="<%= moto.getBrand() %>"/>
+                                        <jsp:param name="modelname" value="<%= moto.getModel() %>"/>
+                                        <jsp:param name="horsepower" value="<%= moto.getHorsePower() %>"/>
+                                        <jsp:param name="maxspeed" value="<%= moto.getMaxSpeed() %>"/>
+                                        <jsp:param name="vehiclestate" value="<%= moto.getState().valeur %>"/>
+                                        <jsp:param name="kilometers" value="<%= moto.getKilometers() %>"/>
+                                    </jsp:include>
+                                    <jsp:include page="modal/delete-vehicle.jsp" flush="true">
+                                        <jsp:param name="id" value="<%= moto.getId() %>"/>
+                                        <jsp:param name="brandname" value="<%= moto.getBrand() %>"/>
+                                        <jsp:param name="modelname" value="<%= moto.getModel() %>"/>
+                                    </jsp:include>
+                                <% } %>
                             </tr>
                         <% } else if (vehicle instanceof Plane) { %>
                             <% Plane plane = (Plane) vehicle; %>
@@ -128,32 +143,34 @@
                                 <td><%= vehicle.getBrand() %></td>
                                 <td><%= vehicle.getModel() %></td>
                                 <td><%= vehicle.getPrixLocJour() %></td>
-                                <td>
-                                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editPlane<%= plane.getId() %>">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                </td>
-                                <td>
-                                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteVehicle<%= plane.getId() %>">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                                <jsp:include page="modal/edit-plane.jsp" flush="true">
-                                    <jsp:param name="id" value="<%= plane.getId() %>"/>
-                                    <jsp:param name="brandname" value="<%= plane.getBrand() %>"/>
-                                    <jsp:param name="modelname" value="<%= plane.getModel() %>"/>
-                                    <jsp:param name="horsepower" value="<%= plane.getHorsePower() %>"/>
-                                    <jsp:param name="maxspeed" value="<%= plane.getMaxSpeed() %>"/>
-                                    <jsp:param name="vehiclestate" value="<%= plane.getState().valeur %>"/>
-                                    <jsp:param name="flightHours" value="<%= plane.getFlightHours() %>"/>
-                                    <jsp:param name="nbMotors" value="<%= plane.getNbMotors() %>"/>
-                                    <jsp:param name="cruisingSpeed" value="<%= plane.getCruisingSpeed() %>"/>
-                                </jsp:include>
-                                <jsp:include page="modal/delete-vehicle.jsp" flush="true">
-                                    <jsp:param name="id" value="<%= plane.getId() %>"/>
-                                    <jsp:param name="brandname" value="<%= plane.getBrand() %>"/>
-                                    <jsp:param name="modelname" value="<%= plane.getModel() %>"/>
-                                </jsp:include>
+                                <% if (canEdit) { %>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editPlane<%= plane.getId() %>">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteVehicle<%= plane.getId() %>">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                    <jsp:include page="modal/edit-plane.jsp" flush="true">
+                                        <jsp:param name="id" value="<%= plane.getId() %>"/>
+                                        <jsp:param name="brandname" value="<%= plane.getBrand() %>"/>
+                                        <jsp:param name="modelname" value="<%= plane.getModel() %>"/>
+                                        <jsp:param name="horsepower" value="<%= plane.getHorsePower() %>"/>
+                                        <jsp:param name="maxspeed" value="<%= plane.getMaxSpeed() %>"/>
+                                        <jsp:param name="vehiclestate" value="<%= plane.getState().valeur %>"/>
+                                        <jsp:param name="flightHours" value="<%= plane.getFlightHours() %>"/>
+                                        <jsp:param name="nbMotors" value="<%= plane.getNbMotors() %>"/>
+                                        <jsp:param name="cruisingSpeed" value="<%= plane.getCruisingSpeed() %>"/>
+                                    </jsp:include>
+                                    <jsp:include page="modal/delete-vehicle.jsp" flush="true">
+                                        <jsp:param name="id" value="<%= plane.getId() %>"/>
+                                        <jsp:param name="brandname" value="<%= plane.getBrand() %>"/>
+                                        <jsp:param name="modelname" value="<%= plane.getModel() %>"/>
+                                    </jsp:include>
+                                <% } %>
                             </tr>
                         <% } else { %>
                             <tr>
@@ -161,8 +178,10 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td></td>
-                                <td></td>
+                                <% if (canEdit) { %>
+                                    <td></td>
+                                    <td></td>
+                                <% } %>
                             </tr>
                         <% } %>
                     <% } %>
@@ -170,12 +189,15 @@
             </table>
         </div>
     </div>
-    <div style="position:fixed; bottom: 25px; right: 24px;">
-        <button class="btn btn-dark-green rounded-pill" data-toggle="modal" data-target="#createVehicleModal">
-            <i class="fas fa-plus"></i> Ajouter
-        </button>
-    </div>
-    <jsp:include page="modal/create-vehicle.jsp"/>
+
+    <% if (canEdit) { %>
+        <div style="position:fixed; bottom: 25px; right: 24px;">
+            <button class="btn btn-dark-green rounded-pill" data-toggle="modal" data-target="#createVehicleModal">
+                <i class="fas fa-plus"></i> Ajouter
+            </button>
+        </div>
+        <jsp:include page="modal/create-vehicle.jsp"/>
+    <% } %>
 </body>
 
 <jsp:include page="/js/mdb-js.jsp"/>

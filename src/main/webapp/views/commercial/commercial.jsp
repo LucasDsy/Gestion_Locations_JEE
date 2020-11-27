@@ -12,11 +12,11 @@
     <jsp:include page="/css/mdb-css.jsp"/>
     <jsp:include page="/js/mdb-js.jsp"/>
 </head>
-<header>
-    <jsp:include page="../templates/nav.jsp" />
-</header>
 <body>
-    <div class="container">
+    <header>
+        <jsp:include page="/views/templates/nav.jsp"/>
+    </header>
+    <div class="container-fluid">
         <table class="table table-striped">
             <thead>
                 <tr>
