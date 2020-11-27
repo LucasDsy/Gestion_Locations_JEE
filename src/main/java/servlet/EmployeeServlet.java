@@ -195,6 +195,4 @@ public class EmployeeServlet extends HttpServlet {
             ErrorUtil.sendError(response, RESULT, result, ERRORS, errors);
         }
     }
-
-
 }

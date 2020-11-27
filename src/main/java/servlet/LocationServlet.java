@@ -170,9 +170,7 @@ public class LocationServlet extends HttpServlet {
 
         Location location = locationService.findById(id);
 
-        if (locationService.delete(location)) {
-            response.sendRedirect(request.getRequestURL().toString());
-        } else {
+        if (!locationService.delete(location)) {
             String result = "Location " + location.getId() + " a été supprimé !";
             ErrorUtil.sendError(response, RESULT, result, ERRORS, errors);
         }
