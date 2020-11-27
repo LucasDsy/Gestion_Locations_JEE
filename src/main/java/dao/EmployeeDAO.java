@@ -53,7 +53,7 @@ public class EmployeeDAO extends DAO<Employee> {
 
         locationDAO.mergeAll(locationDAO.findByEmployee(employee.getId())
                 .stream()
-                .peek(l-> l.setClient(null))
+                .peek(l-> l.setEmployee(null))
                 .collect(Collectors.toList()));
 
         locationDAO.closeSession();
