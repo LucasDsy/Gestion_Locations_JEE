@@ -10,7 +10,6 @@
 <%@ page import="model.people.Role" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%
-    Employee connected = (Employee) request.getAttribute("admin");
     String result = (String) request.getAttribute(RESULT);
     HashSet<String> errorsList = (HashSet<String>) request.getAttribute(ERRORS);
     List<Employee> employees = (List<Employee>) request.getAttribute(EMPLOYEE_ATTRIBUTE);
@@ -23,6 +22,9 @@
     <jsp:include page="/js/mdb-js.jsp"/>
 </head>
 <body>
+    <header>
+        <jsp:include page="/views/templates/nav.jsp"/>
+    </header>
     <% if(errorsList != null && !errorsList.isEmpty()){%>
         <div class="container">
         <span class="text-danger"><%=result%></span><br/>
@@ -34,7 +36,7 @@
         <span class="text-success"><%=result%></span><br/>
     <%}%>
 
-    <div class="container">
+    <div class="container-fluid">
         <table class="table table-striped">
             <thead>
                 <tr>

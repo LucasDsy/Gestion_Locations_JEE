@@ -5,11 +5,16 @@
 <%@ page import="static servlet.CustomerServlet.ERRORS" %>
 <%@ page import="static servlet.CustomerServlet.RESULT" %>
 <%@ page import="static servlet.CustomerServlet.*" %>
-<%@ page import="java.util.ArrayList" %>
 <%@ page import="utils.URLUtil" %>
 <%@ page import="utils.ConvertUtil" %>
+<%@ page import="model.people.Employee" %>
+<%@ page import="static servlet.EmployeeLoginServlet.NAME_USER_SESSION" %>
+<%@ page import="model.people.Role" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%
+    Employee connected = (Employee) request.getSession().getAttribute(NAME_USER_SESSION);
+    boolean canEdit = connected.getRoles().contains(Role.Administrator) || connected.getRoles().contains(Role.ClientManager);
+
     String result = (String) request.getAttribute(RESULT);
     HashSet<String> errorsList = (HashSet<String>) request.getAttribute(ERRORS);
     List<Customer> customers = (List) request.getAttribute(CUSTOMER_ATTRIBUTE);
@@ -22,6 +27,9 @@
     <jsp:include page="/js/mdb-js.jsp"/>
 </head>
 <body>
+    <header>
+        <jsp:include page="/views/templates/nav.jsp"/>
+    </header>
     <% if(errorsList != null && !errorsList.isEmpty()){%>
         <div class="container">
         <span class="text-danger"><%=result%></span><br/>
@@ -32,7 +40,7 @@
     <%} else if(result!=null){%>
         <span class="text-success"><%=result%></span><br/>
     <%}%>
-    <div class="container">
+    <div class="container-fluid">
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -40,8 +48,10 @@
                     <th scope="col">Nom</th>
                     <th scope="col">Prénom</th>
                     <th scope="col">Date de naissance</th>
-                    <th scope="col">Modifier</th>
-                    <th scope="col">Supprimer</th>
+                    <% if (canEdit) { %>
+                        <th scope="col">Modifier</th>
+                        <th scope="col">Supprimer</th>
+                    <% } %>
                 </tr>
             </thead>
             <tbody>
@@ -51,27 +61,31 @@
                         <td><%= customer.getLastName() %></td>
                         <td><%= customer.getFirstName() %></td>
                         <td><%= new SimpleDateFormat("dd MMM yyyy").format(customer.getBirthDate().getTime()) %></td>
-                        <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editCustomer<%=customer.getId()%>"><i class="fas fa-edit"></i></button></td>
-                        <td><button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delCustomer<%=customer.getId()%>"><i class="fas fa-trash"></i></button></td>
-                        <jsp:include page="modal/edit-customer.jsp" flush="true">
-                            <jsp:param name="firstName" value="<%=customer.getFirstName()%>"/>
-                            <jsp:param name="lastName" value="<%=customer.getLastName()%>"/>
-                            <jsp:param name="email" value="<%=customer.getEmail()%>"/>
-                            <jsp:param name="birthDate" value="<%=ConvertUtil.convertDateCalendar(customer.getBirthDate())%>"/>
-                            <jsp:param name="putId" value="<%=customer.getId().toString()%>"/>
-                        </jsp:include>
-                        <jsp:include page="modal/delete-customer.jsp" flush="true">
-                            <jsp:param name="delFirstName" value="<%=customer.getFirstName()%>"/>
-                            <jsp:param name="delLastName" value="<%=customer.getLastName()%>"/>
-                            <jsp:param name="delId" value="<%=customer.getId().toString()%>"/>
-                        </jsp:include>
+                        <% if (canEdit) { %>
+                            <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editCustomer<%=customer.getId()%>"><i class="fas fa-edit"></i></button></td>
+                            <td><button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delCustomer<%=customer.getId()%>"><i class="fas fa-trash"></i></button></td>
+                            <jsp:include page="modal/edit-customer.jsp" flush="true">
+                                <jsp:param name="firstName" value="<%=customer.getFirstName()%>"/>
+                                <jsp:param name="lastName" value="<%=customer.getLastName()%>"/>
+                                <jsp:param name="email" value="<%=customer.getEmail()%>"/>
+                                <jsp:param name="birthDate" value="<%=ConvertUtil.convertDateCalendar(customer.getBirthDate())%>"/>
+                                <jsp:param name="putId" value="<%=customer.getId().toString()%>"/>
+                            </jsp:include>
+                            <jsp:include page="modal/delete-customer.jsp" flush="true">
+                                <jsp:param name="delFirstName" value="<%=customer.getFirstName()%>"/>
+                                <jsp:param name="delLastName" value="<%=customer.getLastName()%>"/>
+                                <jsp:param name="delId" value="<%=customer.getId().toString()%>"/>
+                            </jsp:include>
+                        <% } %>
                     </tr>
                 <% } %>
             </tbody>
         </table>
     </div>
-    <div style="position:fixed; bottom: 25px; right: 24px;"><button class="btn btn-dark-green rounded-pill" data-toggle="modal" data-target="#createCustomer"><i class="fas fa-plus"></i> Ajouter</button></div>
-    <jsp:include page="modal/create-customer.jsp"/>
+    <% if (canEdit) { %>
+        <div style="position:fixed; bottom: 25px; right: 24px;"><button class="btn btn-dark-green rounded-pill" data-toggle="modal" data-target="#createCustomer"><i class="fas fa-plus"></i> Ajouter</button></div>
+        <jsp:include page="modal/create-customer.jsp"/>
+    <% } %>
 </body>
 </html>
 <script>
