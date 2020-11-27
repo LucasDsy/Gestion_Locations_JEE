@@ -2,6 +2,7 @@
 <%@ page import="static servlet.EmployeeLoginServlet.NAME_USER_SESSION" %>
 <%@ page import="model.people.Role" %>
 <%@ page import="utils.URLUtil" %>
+<%@ page import="java.net.URL" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     Employee emp = (Employee) request.getSession().getAttribute(NAME_USER_SESSION);
@@ -15,12 +16,12 @@
         </div>
         <ul class="navbar-nav mr-auto">
             <% if (emp!= null) {%>
-                    <li class="nav-item"><a class="nav-link" href="location">Locations</a></li>
-                    <li class="nav-item"><a class="nav-link" href="vehicle">Véhicules</a></li>
-                    <li class="nav-item"><a class="nav-link" href="customer">Clients</a></li>
-                    <li class="nav-item"><a class="nav-link" href="commercial">TOP 10 Clients</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<%= URLUtil.baseUrl("location") %>">Locations</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<%= URLUtil.baseUrl("vehicle") %>">Véhicules</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<%= URLUtil.baseUrl("customer") %>">Clients</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<%= URLUtil.baseUrl("commercial") %>">TOP 10 Clients</a></li>
                 <% if (isAdmin) {%>
-                    <li class="nav-item"><a class="nav-link" href="employee">Employés</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<%= URLUtil.baseUrl("employee") %>">Employés</a></li>
                 <%}%>
             <%}%>
         <ul/>
