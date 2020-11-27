@@ -164,7 +164,7 @@
             }),
         })
             .then(function (response) {
-                    console.log(response);
+                window.location.href = url;
 
                 }
             )
