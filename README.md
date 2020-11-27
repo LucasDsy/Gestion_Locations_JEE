@@ -3,17 +3,6 @@ Projet Logiciel Location Vehicule
 
 ## Installation
 
-### En mode Dev
-
-Utilisation de docker et docker-compose.
-Prérequis : 
-- docker
-- docker-compose
-- maven
-
-Build le project :
-`mvn clean package`
-
 Lancer le serveur tomcat depuis docker :
 `sudo docker-compose up`
 
