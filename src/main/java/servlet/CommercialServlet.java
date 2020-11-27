@@ -2,7 +2,6 @@ package servlet;
 
 import model.Location;
 import model.people.Customer;
-import service.CustomerService;
 import service.LocationService;
 
 import javax.servlet.ServletException;
@@ -11,9 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @WebServlet("/commercial")
@@ -38,7 +35,9 @@ public class CommercialServlet extends HttpServlet {
                 .stream()
                 .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
                 .limit(10)
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                        (v1,v2) ->{ throw new RuntimeException(String.format("Duplicate key for values %s and %s", v1, v2));},
+                        LinkedHashMap::new));
 
         request.setAttribute(CUSTOMERS ,res);
 
