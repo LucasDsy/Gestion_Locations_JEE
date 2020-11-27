@@ -98,7 +98,7 @@
         })
         .then(response => {
                 if(response.status === 200 || response.status === 0) {
-                    document.location.reload();
+                    window.location.href = url;
                 } else {
                     response.json().then(data => writeErrors(data))
                 }

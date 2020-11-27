@@ -30,13 +30,11 @@ public class VehicleDAO extends DAO<Vehicle> {
         locationDAO.startSession();
 
         locationDAO.mergeAll(locationDAO.findByVehicle(vehicle.getId()).stream()
-                .peek(l-> l.setClient(null))
+                .peek(l-> l.setVehicle(null))
                 .collect(Collectors.toList()));
 
         locationDAO.closeSession();
 
         return super.delete(vehicle);
     }
-
-
 }
