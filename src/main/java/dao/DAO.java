@@ -12,7 +12,7 @@ import java.util.List;
 
 
 // Pour des requêtes spécifiques, il faudra étendre cette classe
-public class DAO<T> {
+public abstract class DAO<T> {
 
     protected Session session;
     final protected Class<T> typeParameterClass;

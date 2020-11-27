@@ -6,6 +6,9 @@
 <%@ page import="static servlet.CustomerServlet.RESULT" %>
 <%@ page import="static servlet.LocationServlet.*" %>
 <%@ page import="utils.URLUtil" %>
+<%@ page import="model.people.Customer" %>
+<%@ page import="model.vehicle.Vehicle" %>
+<%@ page import="model.people.Employee" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%
     String result = (String) request.getAttribute(RESULT);
@@ -36,6 +39,7 @@
                 <tr>
                     <th class="th-sm">Loueur</th>
                     <th class="th-sm">Véhicule</th>
+                    <th class="th-sm">Gestionnaire</th>
                     <th class="th-sm">Date début</th>
                     <th class="th-sm">Date fin</th>
                     <th class="th-sm">Etat</th>
@@ -44,10 +48,15 @@
                 </thead>
                 <tbody>
                     <% if (locations != null) { %>
-                        <% for (Location location : locations) { %>
+                        <% for (Location location : locations) {
+                            Customer customer = location.getClient();
+                            Vehicle vehicle = location.getVehicle();
+                            Employee employee = location.getEmployee();
+                        %>
                             <tr>
-                                <td><%= location.getClient().getFirstName() %> <%= location.getClient().getLastName() %></td>
-                                <td><%= location.getVehicle().getModel() %> <%= location.getVehicle().getBrand() %></td>
+                                <td><%= customer == null ? "Client supprimé":customer.getFirstName() + " "+customer.getLastName() %></td>
+                                <td><%= vehicle == null ? "Véhicule supprimé" : vehicle.getModel() + " " + vehicle.getBrand() %></td>
+                                <td><%= employee == null ? "Employé supprimé" : employee.getFirstName() + " " + employee.getLastName() %></td>
                                 <td><%= new SimpleDateFormat("dd/MM/yyyy").format(location.getStartDate().getTime()) %></td>
                                 <td><%= new SimpleDateFormat("dd/MM/yyyy").format(location.getEndDate().getTime()) %></td>
                                 <td><%= location.getStatus() %></td>
@@ -84,7 +93,7 @@
         })
         .then(response => {
             if(response.status === 200 || response.status === 0) {
-                document.location.reload();
+                window.location.href = url;
             } else {
                 response.json().then(data => writeErrors(data))
             }

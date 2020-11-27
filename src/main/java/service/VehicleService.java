@@ -1,6 +1,7 @@
 package service;
 
 import dao.VehicleDAO;
+import model.people.Customer;
 import model.people.Employee;
 import model.vehicle.Vehicle;
 
@@ -22,6 +23,15 @@ public class VehicleService extends Service<Vehicle> {
         List<Vehicle> res = this.getDAO().findAvailable();
         this.dao.closeSession();
 
+        return res;
+    }
+
+    @Override
+    public boolean delete(Vehicle vehicle) {
+        boolean res;
+        this.dao.startSession();
+        res = getDAO().delete(vehicle);
+        this.dao.closeSession();
         return res;
     }
 }
