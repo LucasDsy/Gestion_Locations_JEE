@@ -227,7 +227,6 @@ public class LocationServlet extends HttpServlet {
                 }
                 else{
                     location.setStatus(State.Completed);
-                    location.setEndDate(new GregorianCalendar());
                 }
                 service.update(location);
             }
