@@ -9,32 +9,24 @@ Utilisation de docker et docker-compose.
 Prérequis : 
 - docker
 - docker-compose
-- mvn (maven)
+- maven
 
-Tout d'abord on build le project:
+Build le project :
+`mvn clean package`
 
-`mvn package`
-
-Clean :
-
-`mvn clean`
-
-On peut ensuite lancer le serveur tomcat & phpmyadmin depuis docker:
-
-`sudo docker-compose up;`
+Lancer le serveur tomcat depuis docker :
+`sudo docker-compose up`
 
 /!\ A noter que l'adresse de la base de données n'est pas localhost mais db /!\
 
 Faire un Ctrl + C pour quitter.
 
-En cas de problème, commencer par faire un :
+En cas de problème, faire :
 
-`sudo docke-compose down -v`.
+`sudo docker-compose down -v`.
 
-#### Hello World
+## Navigateur
 
-Pour tester l'installation :
-
-http://localhost:8080/LocaJee
+URL de l'application : http://localhost:8080/LocaJee
 
 
