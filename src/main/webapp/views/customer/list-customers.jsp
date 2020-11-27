@@ -107,7 +107,7 @@
         .catch(error => console.error(error))
     }
 
-    function deleteObject(id) {
+    function deleteCustomer(id) {
         let data = {};
         data.id = id;
 
@@ -121,7 +121,7 @@
         })
             .then(function (response) {
                     if(response.status === 200 || response.status === 0) {
-                        document.location.reload();
+                        window.location.href = url;
                     } else {
                         response.json().then(data => writeErrors(data))
                     }

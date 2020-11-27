@@ -1,9 +1,11 @@
 package dao;
 
+import model.people.Customer;
 import model.vehicle.Vehicle;
 
 import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class VehicleDAO extends DAO<Vehicle> {
 
@@ -19,6 +21,21 @@ public class VehicleDAO extends DAO<Vehicle> {
         List<Vehicle> results = query.getResultList();
 
         return results;
+    }
+
+    @Override
+    public boolean delete(Vehicle vehicle) {
+        LocationDAO locationDAO = new LocationDAO();
+
+        locationDAO.startSession();
+
+        locationDAO.mergeAll(locationDAO.findByVehicle(vehicle.getId()).stream()
+                .peek(l-> l.setClient(null))
+                .collect(Collectors.toList()));
+
+        locationDAO.closeSession();
+
+        return super.delete(vehicle);
     }
 
 

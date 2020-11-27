@@ -1,6 +1,9 @@
 package dao;
 
+import model.people.Customer;
 import model.people.Employee;
+
+import java.util.stream.Collectors;
 
 public class EmployeeDAO extends DAO<Employee> {
 
@@ -42,4 +45,19 @@ public class EmployeeDAO extends DAO<Employee> {
         return res;
     }
 
+    @Override
+    public boolean delete(Employee employee) {
+        LocationDAO locationDAO = new LocationDAO();
+
+        locationDAO.startSession();
+
+        locationDAO.mergeAll(locationDAO.findByEmployee(employee.getId())
+                .stream()
+                .peek(l-> l.setClient(null))
+                .collect(Collectors.toList()));
+
+        locationDAO.closeSession();
+
+        return super.delete(employee);
+    }
 }

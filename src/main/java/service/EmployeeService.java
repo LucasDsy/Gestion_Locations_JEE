@@ -2,6 +2,7 @@ package service;
 
 import dao.EmployeeDAO;
 import model.people.Employee;
+import model.vehicle.Vehicle;
 
 public class EmployeeService extends Service<Employee> {
 
@@ -31,6 +32,15 @@ public class EmployeeService extends Service<Employee> {
         this.dao.closeSession();
 
         return res != null;
+    }
+
+    @Override
+    public boolean delete(Employee employee) {
+        boolean res;
+        this.dao.startSession();
+        res = getDAO().delete(employee);
+        this.dao.closeSession();
+        return res;
     }
 
     @Override

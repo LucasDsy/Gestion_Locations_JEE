@@ -115,9 +115,9 @@ public class CustomerServlet extends HttpServlet {
 
         Customer customer = customerService.findById(id);
 
-        if (customerService.delete(customer)) {
-            response.sendRedirect(request.getRequestURL().toString());
-        } else {
+        request.getServletContext().log(customer.getFirstName());
+
+        if (!customerService.delete(customer)) {
             String result = "Impossible de supprimer le client : " + customer.getFirstName() + " " + customer.getLastName() + ".";
             ErrorUtil.sendError(response, RESULT, result, ERRORS, errors);
         }
@@ -151,12 +151,10 @@ public class CustomerServlet extends HttpServlet {
                 .map(ConstraintViolation::getMessage)
                 .forEach(errors::add);
 
-        String result;
         if (errors.isEmpty()) {
             customerService.update(customer);
-            resp.sendRedirect(req.getRequestURL().toString());
         } else {
-            result = "Impossible de mettre à jour le client " + customer.getFirstName() + " " + customer.getLastName();
+            String result = "Impossible de mettre à jour le client " + customer.getFirstName() + " " + customer.getLastName();
             ErrorUtil.sendError(resp, RESULT, result, ERRORS, errors);
         }
     }
