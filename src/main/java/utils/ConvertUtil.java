@@ -2,6 +2,7 @@ package utils;
 
 import model.people.Role;
 
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,5 +45,10 @@ public class ConvertUtil {
     public static String convertRolesListToString(Set<Role> roles) {
         return String.join(",", Arrays.toString(roles.toArray()))
                 .replaceAll("\\[|\\]", "");
+    }
+
+    public static String inputStreamToString(InputStream inputStream) {
+        Scanner scanner = new Scanner(inputStream, "UTF-8");
+        return scanner.hasNext() ? scanner.useDelimiter("\\A").next() : "";
     }
 }

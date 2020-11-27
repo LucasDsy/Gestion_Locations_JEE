@@ -108,7 +108,7 @@ public class CustomerServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HashSet<String> errors = new HashSet<>();
-        String body = inputStreamToString(request.getInputStream());
+        String body = ConvertUtil.inputStreamToString(request.getInputStream());
 
         JSONObject jsonObject = new JSONObject(body);
         Integer id = jsonObject.getInt("id");
@@ -126,7 +126,7 @@ public class CustomerServlet extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HashSet<String> errors = new HashSet<>();
-        String body = inputStreamToString(req.getInputStream());
+        String body = ConvertUtil.inputStreamToString(req.getInputStream());
         JSONObject jsonObject = new JSONObject(body);
         Integer id = jsonObject.getInt("id");
 
@@ -157,10 +157,5 @@ public class CustomerServlet extends HttpServlet {
             String result = "Impossible de mettre à jour le client " + customer.getFirstName() + " " + customer.getLastName();
             ErrorUtil.sendError(resp, RESULT, result, ERRORS, errors);
         }
-    }
-
-    private static String inputStreamToString(InputStream inputStream) {
-        Scanner scanner = new Scanner(inputStream, "UTF-8");
-        return scanner.hasNext() ? scanner.useDelimiter("\\A").next() : "";
     }
 }
