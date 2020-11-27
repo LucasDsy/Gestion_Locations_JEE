@@ -24,6 +24,8 @@ import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -33,9 +35,10 @@ public class LocationServlet extends HttpServlet {
 
     /** Attributes **/
     public static final String LOCATION_ATTRIBUTE = "locationsList";
-    private static final String ID = "id";
+    public static final String ID = "id";
     public static final String ERRORS = "errors";
     public static final String RESULT = "result";
+    public static final String PRICE = "price";
     public static final String VEHICLES_LIST = "vehiclesList";
     public static final String CUSTOMERS_LIST = "customersList";
     public static final String VEHICLE_ID = "idVehicle";
@@ -44,6 +47,8 @@ public class LocationServlet extends HttpServlet {
     public static final String DISCOUNT = "discount";
     public static final String START_DATE = "startDate";
     public static final String END_DATE = "endDate";
+    public static final String LOCATION_ID = "locationId";
+    public static final String ACTUAL_DISTANCE = "actualDistance";
 
     /** Views **/
     private static final String LOCATION_VIEW = "/views/location/list-location.jsp";
@@ -53,6 +58,7 @@ public class LocationServlet extends HttpServlet {
     private static final String VEHICLE_NOT_FOUND = "Ce véhicule n'existe pas";
     private static final String CUSTOMER_NOT_FOUND = "Ce client n'existe pas";
     private static final String EMPLOYEE_NOT_FOUND = "Votre compte n'a pas été trouvé";
+    private static final String LOCATION_NOT_FOUND = "Impossible de retrouver la location";
 
     /** SESSION **/
     private static final String NAME_USER_SESSION = "user";
@@ -174,5 +180,62 @@ public class LocationServlet extends HttpServlet {
             String result = "Location " + location.getId() + " a été supprimé !";
             ErrorUtil.sendError(response, RESULT, result, ERRORS, errors);
         }
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        LocationService service = new LocationService();
+
+        HashSet<String> errors = new HashSet<>();
+        int idLocation=-1;
+        int actualDistance=-1;
+        String body = inputStreamToString(req.getInputStream());
+        JSONObject jsonObject = new JSONObject(body);
+        try{
+            actualDistance = jsonObject.getInt(ACTUAL_DISTANCE);
+        }
+        catch (Exception ignored){}
+
+        try{
+            idLocation = jsonObject.getInt(LOCATION_ID);
+        }
+        catch (Exception e){
+            errors.add(INVALID_FIELDS);
+        }
+
+        if(errors.isEmpty()){
+            Location location = service.findById(idLocation);
+
+            if(location==null){
+                errors.add(LOCATION_NOT_FOUND);
+            }
+            else{
+                if(actualDistance!=-1){
+                    location.setKmReel(actualDistance);
+
+                    JSONObject resultJson = new JSONObject();
+                    resultJson.put("price", location.getActualPrice());
+
+                    resp.setContentType("application/json");
+                    resp.setCharacterEncoding("UTF-8");
+                    resp.setStatus(200);
+
+                    PrintWriter out = resp.getWriter();
+                    out.write(resultJson.toString());
+                    out.flush();
+                    out.close();
+                }
+                else{
+                    location.setStatus(State.Completed);
+                    location.setEndDate(new GregorianCalendar());
+                }
+                service.update(location);
+            }
+        }
+    }
+
+    private static String inputStreamToString(InputStream inputStream) {
+        Scanner scanner = new Scanner(inputStream, "UTF-8");
+        return scanner.hasNext() ? scanner.useDelimiter("\\A").next() : "";
     }
 }
