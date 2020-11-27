@@ -17,29 +17,31 @@
         <jsp:include page="/views/templates/nav.jsp"/>
     </header>
     <div class="container-fluid">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Nom</th>
-                    <th scope="col">Prénom</th>
-                    <th scope="col">Total dépense</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% for (Map.Entry<Customer, Double> entry : customers.entrySet()) {
-                    Customer customer = entry.getKey();
-                    Double sum = entry.getValue();
-                %>
+        <div class="row">
+            <table class="table table-striped">
+                <thead>
                     <tr>
-                        <th scope="row"><%= customer.getId() %></th>
-                        <td><%= customer.getLastName() %></td>
-                        <td><%= customer.getFirstName() %></td>
-                        <td><%= String.format("%.2f", sum) %> €</td>
+                        <th scope="col">#</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Prénom</th>
+                        <th scope="col">Total dépense</th>
                     </tr>
-                <% } %>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <% for (Map.Entry<Customer, Double> entry : customers.entrySet()) {
+                        Customer customer = entry.getKey();
+                        Double sum = entry.getValue();
+                    %>
+                        <tr>
+                            <th scope="row"><%= customer.getId() %></th>
+                            <td><%= customer.getLastName() %></td>
+                            <td><%= customer.getFirstName() %></td>
+                            <td><%= String.format("%.2f", sum) %> €</td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
     </div>
 </body>
 </html>

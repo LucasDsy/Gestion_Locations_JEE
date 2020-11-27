@@ -12,8 +12,6 @@
 <%@ page import="model.people.Employee" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%
-    String result = (String) request.getAttribute(RESULT);
-    HashSet<String> errorsList = (HashSet<String>) request.getAttribute(ERRORS);
     List<Location> locations = (List) request.getAttribute(LOCATION_ATTRIBUTE);
 %>
 <html>
@@ -27,17 +25,9 @@
     <header>
         <jsp:include page="/views/templates/nav.jsp"/>
     </header>
-    <% if(errorsList != null && !errorsList.isEmpty()){%>
-    <div class="container">
-        <span class="text-danger"><%=result%></span><br/>
-        <% for(String err : errorsList){%>
-            <span class="text-danger"><%=err%></span><br/>
-        <%}%>
-    </div>
-        <%} else if(result!=null){%>
-            <span class="text-success"><%=result%></span><br/>
-        <%}%>
-        <div class="container-fluid">
+
+    <div class="container-fluid">
+        <div class="row">
             <table id="dtVehicles" class="table table-striped">
                 <thead>
                 <tr>
@@ -104,10 +94,10 @@
                 </tbody>
             </table>
         </div>
-        <div style="position:fixed; bottom: 25px; right: 24px;"><button class="btn btn-dark-green rounded-pill" data-toggle="modal" data-target="#createLocation"><i class="fas fa-plus"></i> Ajouter</button></div>
-        <jsp:include page="modal/create-location.jsp"/>
-    </body>
-</html>
+    </div>
+    <div style="position:fixed; bottom: 25px; right: 24px;"><button class="btn btn-dark-green rounded-pill" data-toggle="modal" data-target="#createLocation"><i class="fas fa-plus"></i> Ajouter</button></div>
+    <jsp:include page="modal/create-location.jsp"/>
+</body>
 <script>
     const url = "<%= URLUtil.baseUrl("location")%>";
 
@@ -206,3 +196,4 @@
     }
 
 </script>
+</html>
