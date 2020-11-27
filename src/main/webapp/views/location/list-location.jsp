@@ -173,6 +173,9 @@
 
     function sendKm(id){
         km = document.getElementById('km'+id).value;
+        if(km==null||km===""||km==undefined){
+            km=0;
+        }
         let data = {
             locationId: id,
             actualDistance : km

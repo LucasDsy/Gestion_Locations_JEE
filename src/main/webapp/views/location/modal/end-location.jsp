@@ -20,7 +20,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <input type="number" placeholder="Nombre km" id="km<%=id%>" onchange="sendKm(<%=id%>)">
+                <input type="number" placeholder="Nombre km" id="km<%=id%>" onkeyup="sendKm(<%=id%>)">
                 <p>Le prix de la location est de <span id="price<%=id%>"></span>€</p>
                 <p>Êtes-vous sûr(e) de finaliser la location <%=id%> ?</p>
             </div>
