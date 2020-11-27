@@ -1,4 +1,4 @@
-<%@ page import="servlet.VehicleServlet" %>
+<%@ page import="static servlet.VehicleServlet.*" %>
 <%@ page import="model.vehicle.State" %>
 <%@ page import="utils.URLUtil" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
@@ -23,23 +23,23 @@
             <div class="card-body">
                 <div class="row">
                     <div class="form-group col">
-                        <label for="<%= VehicleServlet.BRAND %>">Marque</label>
-                        <input type="text" class="form-control" id="<%= VehicleServlet.BRAND %>" name="<%= VehicleServlet.BRAND %>" required>
+                        <label for="<%= BRAND %><%= VEHICLE_TYPE %>">Marque</label>
+                        <input type="text" class="form-control" id="<%= BRAND %><%= VEHICLE_TYPE %>" name="<%= BRAND %>" required>
                     </div>
 
                     <div class="form-group col">
-                        <label for="<%= VehicleServlet.MODEL %>">Modèle</label>
-                        <input type="text" class="form-control" id="<%= VehicleServlet.MODEL %>" name="<%= VehicleServlet.MODEL %>" required>
+                        <label for="<%= MODEL %><%= VEHICLE_TYPE %>">Modèle</label>
+                        <input type="text" class="form-control" id="<%= MODEL %><%= VEHICLE_TYPE %>" name="<%= MODEL %>" required>
                     </div>
 
                     <div class="form-group col">
-                        <label for="<%= VehicleServlet.HORSEPOWER %>">Puissance</label>
-                        <input type="number" min="0" max="10000" class="form-control" id="<%= VehicleServlet.HORSEPOWER %>" name="<%= VehicleServlet.HORSEPOWER %>" required>
+                        <label for="<%= HORSEPOWER %><%= VEHICLE_TYPE %>">Puissance</label>
+                        <input type="number" min="0" max="10000" class="form-control" id="<%= HORSEPOWER %><%= VEHICLE_TYPE %>" name="<%= HORSEPOWER %>" required>
                     </div>
 
                     <div class="form-group col">
-                        <label for="<%= VehicleServlet.VEHICLE_STATE %>">État</label>
-                        <select class="form-control" id="<%= VehicleServlet.VEHICLE_STATE %>" name="<%= VehicleServlet.VEHICLE_STATE %>" required>
+                        <label for="<%= VEHICLE_STATE %><%= VEHICLE_TYPE %>">État</label>
+                        <select class="form-control" id="<%= VEHICLE_STATE %><%= VEHICLE_TYPE %>" name="<%= VEHICLE_STATE %>" required>
                             <% for (State s : State.values()) { %>
                             <option value="<%= s.valeur %>"><%= s.toString() %></option>
                             <% } %>
@@ -49,29 +49,29 @@
 
                 <div class="row">
                     <div class="form-group col">
-                        <label for="<%= VehicleServlet.MAXSPEED %>">Vitesse maximale</label>
-                        <input type="number" min="0" max="1000" class="form-control" id="<%= VehicleServlet.MAXSPEED %>" name="<%= VehicleServlet.MAXSPEED %>" required>
+                        <label for="<%= MAXSPEED %><%= VEHICLE_TYPE %>">Vitesse maximale</label>
+                        <input type="number" min="0" max="1000" class="form-control" id="<%= MAXSPEED %><%= VEHICLE_TYPE %>" name="<%= MAXSPEED %>" required>
                     </div>
 
                     <div class="form-group col">
-                        <label for="<%= VehicleServlet.CRUISING_SPEED %>">Vitesse de croisière</label>
-                        <input type="number" min="0" max="10000" class="form-control" id="<%= VehicleServlet.CRUISING_SPEED %>" name="<%= VehicleServlet.CRUISING_SPEED %>" required>
+                        <label for="<%= CRUISING_SPEED %><%= VEHICLE_TYPE %>">Vitesse de croisière</label>
+                        <input type="number" min="0" max="10000" class="form-control" id="<%= CRUISING_SPEED %><%= VEHICLE_TYPE %>" name="<%= CRUISING_SPEED %>" required>
                     </div>
 
                     <div class="form-group col">
-                        <label for="<%= VehicleServlet.FLIGHT_HOURS %>">Heures de vol</label>
-                        <input type="number" min="0" max="1000000" class="form-control" id="<%= VehicleServlet.FLIGHT_HOURS %>" name="<%= VehicleServlet.FLIGHT_HOURS %>" required>
+                        <label for="<%= FLIGHT_HOURS %><%= VEHICLE_TYPE %>">Heures de vol</label>
+                        <input type="number" min="0" max="1000000" class="form-control" id="<%= FLIGHT_HOURS %><%= VEHICLE_TYPE %>" name="<%= FLIGHT_HOURS %>" required>
                     </div>
 
                     <div class="form-group col">
-                        <label for="<%= VehicleServlet.NB_MOTORS %>">Nombre de moteurs</label>
-                        <input type="number" min="0" max="12" class="form-control" id="<%= VehicleServlet.NB_MOTORS %>" name="<%= VehicleServlet.NB_MOTORS %>" required>
+                        <label for="<%= NB_MOTORS %><%= VEHICLE_TYPE %>">Nombre de moteurs</label>
+                        <input type="number" min="0" max="12" class="form-control" id="<%= NB_MOTORS %><%= VEHICLE_TYPE %>" name="<%= NB_MOTORS %>" required>
                     </div>
                 </div>
             </div>
 
             <div class="card-footer">
-                <input type="hidden" name="<%= VehicleServlet.VEHICLE_TYPE %>" value="<%= VehicleServlet.PLANE %>">
+                <input type="hidden" name="<%= VEHICLE_TYPE %>" value="<%= PLANE %>">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
                 <button type="submit" class="btn btn-dark-green">Créer</button>
             </div>
